@@ -1,0 +1,22 @@
+.knob {
+    width: 60px;
+    height: 60px;
+    border-radius: 120%;
+    background: none;
+    outline: none;
+    box-shadow: none;
+    color: inherit;
+    cursor: default;
+    border-style: dotted
+}
+button:focus {
+    background: none;
+    outline: none;
+    box-shadow: none;
+    color: inherit;
+    cursor: default;
+}
+.arrow {
+    margin-left: 90%;
+    font-size:40px
+}

@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&display=swap');
+body {
+    font-family: "Google Sans Code", monospace;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+input[type="range"] {
+  appearance: none;
+  width: 200px; /* default */
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  background-color: white;
+  box-sizing: border-box;
+  border-style: solid;
+  height: 14px;
+  border-width: 2px;
+  border-style: dotted;
+}
+
+input[type="range"]::-moz-range-track {
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  border-style: solid;
+  height: 14px;
+  border-width: 2px;
+  border-style: dotted;
+}
+
+input[type="range"]::-moz-range-thumb {
+  border-style: solid;
+  border-radius: 0;
+  border-width: 2px;
+  border-color:black;
+  background-color: white;
+}
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-style: solid;
+  border-radius: 0;
+  border-width: 2px;
+  border-color:black;
+  background-color: white;
+  margin-top: -4px
+}

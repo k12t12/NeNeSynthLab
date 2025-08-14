@@ -1,0 +1,20 @@
+.droneSynth {
+    padding-left: 17px;
+    border-style: solid;
+    width: 310px;
+    height: 380px;
+}
+.knobs {
+
+    display: grid;
+     grid-template-columns: 100px 100px 100px;
+    margin-top:20px;
+    margin-left: 10px
+}
+
+.effectBlock {
+    border-style: solid;
+    border-width: 1px;
+    width:72px;
+    text-align: center;
+}

@@ -10,7 +10,7 @@ export default function useDroneSynth(init = defaultParametrs) {
   const [thirdOscState, useThirdOscState] = useState(init.thirdOsc)
   const [vibratoState, useVibratoState] = useState({freq: init.vibratoFreq, depth: init.vibratoDepth})
   const [filterState, useFilterState] = useState({freq: init.filterFreq, Q: init.filterQ})
-  const [reverbState, useReverbState] = useState({wet: init.reverbWet, decay: init.reverbDecay})
+  const [delayState, useDelayState] = useState({time: init.delayTime, feedback: init.delayFeedback})
 
   useEffect(() => {
     droneSynth.current = new DroneSynth(init);
@@ -42,17 +42,17 @@ export default function useDroneSynth(init = defaultParametrs) {
   }, [vibratoState])
 
   useEffect(()=>{
-    droneSynth.current.setReverb(reverbState)
+    droneSynth.current.setDelay(delayState)
     console.log(1)
-  }, [reverbState])
+  }, [delayState])
 
   const start = () => droneSynth.current?.startSound();
   const stop = () => droneSynth.current?.stopSound();
-  const setReverb = (state) => useReverbState(state)
+  const setDelay = (state) => useDelayState(state)
   const setFirstOsc = (state) => useFirstOscState(state)
   const setSecondOsc = (state) => useSecondOscState(state)
   const setThirdOsc = (state) => useThirdOscState(state)
   const setVibrato = (state) => useVibratoState(state)
   const setFilter = (state) => useFilterState(state)
-    return { start, stop, setFirstOsc, setSecondOsc, setThirdOsc, setVibrato, setFilter, setReverb, firstOscState, secondOscState, thirdOscState, vibratoState, filterState, reverbState};
+    return { start, stop, setFirstOsc, setSecondOsc, setThirdOsc, setVibrato, setFilter, setDelay, firstOscState, secondOscState, thirdOscState, vibratoState, filterState, delayState};
 }

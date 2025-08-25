@@ -1,24 +1,23 @@
-import { Filter, Oscillator, Vibrato, Reverb} from "tone"
+import { Filter, Oscillator, Vibrato, FeedbackDelay} from "tone"
 
 export default class DroneSynth {
     constructor() {
-        this.reverb = new Reverb(1)
-        this.vibrato = new Vibrato(null, null).connect(this.reverb)
+        this.delay = new FeedbackDelay(1, null)
+        this.vibrato = new Vibrato(null, null).connect(this.delay)
         this.filter = new Filter(null, "lowpass").connect(this.vibrato)
         this.oscs = {
         firstOsc: new Oscillator(null, "square10").connect(this.filter),
         secondOsc: new Oscillator(null, "square10").connect(this.filter),
         thirdOsc: new Oscillator(null, "square10").connect(this.filter)
       }
-        this.reverb.toDestination()
+        this.delay.toDestination()
     }
-    setReverb(parametrs){
-      console.log(parametrs)
-      if (parametrs.decay) {
-        this.reverb.set({decay: parametrs.decay})
+    setDelay(parametrs){
+      if (parametrs.time) {
+        this.delay.set({delayTime: parametrs.time})
       }
-      if (parametrs.wet) {
-        this.reverb.set({wet: parametrs.wet})
+      if (parametrs.feedback) {
+        this.delay.set({feedback: parametrs.feedback})
       }
     }
     setOscillator(name, parametrs){

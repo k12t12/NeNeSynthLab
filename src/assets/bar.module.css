@@ -1,0 +1,11 @@
+.bar{
+    height: 25px;
+    display: flex;
+    
+}
+.handle {
+    background-color: black;
+    width: 100%;
+    color:white;
+    text-align: center;
+}

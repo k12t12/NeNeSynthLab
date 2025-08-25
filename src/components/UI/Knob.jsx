@@ -1,6 +1,7 @@
 import { useCallback, useRef, useEffect, useState, useLayoutEffect } from "react";
 import interpolateToNewRange from "../../utils/interpolateToNewRange";
-import "../../assets/knob.css"
+
+import styles from "../../assets/knob.module.css"
 
 export default function KnobComponent({onChange, max, min, step, initValue}) {
   const elementRef = useRef()
@@ -47,14 +48,14 @@ export default function KnobComponent({onChange, max, min, step, initValue}) {
     internalState.current.knobX = knobBoundaries.x + internalState.current.radius;
     internalState.current.knobY = knobBoundaries.y + internalState.current.radius;
   
-  }, []);
+  }, [angle]);
     return (<div  >
     <button 
-      className="knob"
+      className={styles.knob}
      ref = {elementRef}
      onMouseDown={onMouseDown}
      style={{
         transform: "rotate(" + angle + "deg"
-        }} >  <div className="arrow"> - </div> </button>
+        }} >  <div className={styles.arrow}> - </div> </button>
     </div>)
 }

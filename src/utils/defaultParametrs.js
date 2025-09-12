@@ -23,8 +23,19 @@ const droneSynthDefaultParametrs = {
   filterQ: 10,
   vibratoFreq: 1,
   vibratoDepth: 1,
-  reverbDecay: 0.1,
-  reverbWet: 1
+  delayTime: 0.1,
+  delayFeedback: 0.1
 }
 
-export {droneSynthDefaultParametrs}
+const seqSynthDefaultParametrs = {
+  sequences: [
+    ["C4", "C4", "C4", "C4", "C4", "C4", "C4","C4"],
+    ["C4", "C4", "C4", "C4", "C4", "C4", "C4","C4"],
+    ["C4", "C4", "C4", "C4", "C4", "C4", "C4","C4"],
+    ["C4", "C4", "C4", "C4", "C4", "C4", "C4","C4"]
+  ],
+  currentSequenceIndex: 0,
+  interval: "4n"
+
+}
+export {droneSynthDefaultParametrs, seqSynthDefaultParametrs}

@@ -1,17 +1,17 @@
 import { useState } from "react"
 import { DndContext } from "@dnd-kit/core"
-import { useWindowSize } from "react-use";
 import DroneSynth from "./components/instruments/droneSynth/droneSynth"
-
+import SeqSynth from "./components/instruments/seqSynth/seqSynth"
+import NoiseGenerator from "./components/instruments/noiseSynth/noiseGenerator"
 
 import "./assets/main.css"
+
 function App() {
-  const {width, height} = useWindowSize();
   const [instruments, setInstruments] = useState([])
   const [index, setIndex] = useState(0)
-  const addInstrument = () => {
-    setInstruments([...instruments, {id: index, x: 92, y:92}])
-    setIndex(index + 2)
+  const addInstrument = (instrumentComponent) => {
+    setInstruments([...instruments, {id: index, x: 92, y:92, component: instrumentComponent}])
+    setIndex(index + 1)
   }
  const handleDragEnd = (event) => {
 
@@ -32,9 +32,13 @@ function App() {
  }
   return (
     <>
-    <button onClick={addInstrument}> add </button>
+    <button onClick={()=>addInstrument(DroneSynth)}> add drone synth </button>
+    <button onClick={()=>addInstrument(SeqSynth)}> add sequencer synth </button>
     <DndContext onDragEnd={handleDragEnd}>
-    {instruments.map((ins)=> <DroneSynth key={ins.id} id={ins.id} 
+    {instruments.map((ins)=>{
+      const Instrument = ins.component
+      return (
+       <Instrument key={ins.id} id={ins.id} 
      onClose={()=>{
       setInstruments(instruments.filter(el => el !== ins))
      }
@@ -42,10 +46,14 @@ function App() {
     x = {ins.x}
     y={ins.y}
       endPosStyle={{
-      position: "absolute",
       left: ins.x,
       top: ins.y,
-      }}></DroneSynth>)}
+      }}></Instrument>)
+      }
+      )
+      }
+
+      <NoiseGenerator> </NoiseGenerator>
     </DndContext>
     </>
   )

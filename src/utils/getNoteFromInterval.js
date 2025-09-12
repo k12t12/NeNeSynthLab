@@ -8,3 +8,5 @@ export default function getNoteFromInterval(interval){
   }
   return note
 }
+
+

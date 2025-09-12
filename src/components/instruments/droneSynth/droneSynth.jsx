@@ -6,30 +6,44 @@ import { useWindowSize } from "react-use";
 import { useDraggable } from "@dnd-kit/core";
 
 import styles from "../../../assets/droneSynth.module.css"
-export default function DroneSynthComponent({id, endPosStyle, onClose, x, y}) {
-  const { start, stop, setFirstOsc, setSecondOsc, setThirdOsc, setVibrato, setFilter, setDelay , firstOscState, secondOscState, thirdOscState, vibratoState, filterState, delayState} = useDroneSynth();
+export default function DroneSynthComponent({id, endPosStyle, onClose}) {
+  const {
+    start,
+    stop,
+    setFirstOscState,
+    setSecondOscState,
+    setThirdOscState,
+    setVibratoState,
+    setFilterState,
+    setDelayState,
+    firstOscState,
+    secondOscState,
+    thirdOscState,
+    vibratoState,
+    filterState,
+    delayState,
+  } = useDroneSynth();
 
-  const handlerSliderFirstOscFreq = (e) => { setFirstOsc({interval: Number(e.target.value), freq: getNoteFromInterval(Number(e.target.value)).freq, noteName: getNoteFromInterval(Number(e.target.value)).name})}
-  const handlerSliderSecondOscFreq = (e) => { setSecondOsc({interval: Number(e.target.value), freq: getNoteFromInterval(Number(e.target.value)).freq, noteName: getNoteFromInterval(Number(e.target.value)).name})}
-  const handlerSliderThirdOscFreq = (e) => { setThirdOsc({interval: Number(e.target.value), freq: getNoteFromInterval(Number(e.target.value)).freq, noteName: getNoteFromInterval(Number(e.target.value)).name})}
-  const handlerKnobFilterFreq = (e) => {setFilter({freq: e, Q: filterState.Q})}
-  const handlerKnobFilterQ = (e) => {setFilter({Q: e, freq: filterState.freq})}
-  const handlerKnobVibratoFreq = (e) => {setVibrato({freq: e, depth: vibratoState.depth})}
-  const handlerKnobVibratoDepth = (e) => {setVibrato({freq: vibratoState.freq, depth: e})}
-  const handlerKnobDelayFeedback = (e) => {setDelay({feedback: e, time: delayState.time})}
-  const handlerKnobDelayTime = (e) => {setDelay({feedback: delayState.feedback, time: e})}
-  const {width, height} = useWindowSize(); 
+  const handlerSliderFirstOscFreq = (e) => { setFirstOscState({interval: Number(e.target.value), freq: getNoteFromInterval(Number(e.target.value)).freq, noteName: getNoteFromInterval(Number(e.target.value)).name})}
+  const handlerSliderSecondOscFreq = (e) => { setSecondOscState({interval: Number(e.target.value), freq: getNoteFromInterval(Number(e.target.value)).freq, noteName: getNoteFromInterval(Number(e.target.value)).name})}
+  const handlerSliderThirdOscFreq = (e) => { setThirdOscState({interval: Number(e.target.value), freq: getNoteFromInterval(Number(e.target.value)).freq, noteName: getNoteFromInterval(Number(e.target.value)).name})}
+  const handlerKnobFilterFreq = (e) => {setFilterState({freq: e, Q: filterState.Q})}
+  const handlerKnobFilterQ = (e) => {setFilterState({Q: e, freq: filterState.freq})}
+  const handlerKnobVibratoFreq = (e) => {setVibratoState({freq: e, depth: vibratoState.depth})}
+  const handlerKnobVibratoDepth = (e) => {setVibratoState({freq: vibratoState.freq, depth: e})}
+  const handlerKnobDelayFeedback = (e) => {setDelayState({feedback: e, time: delayState.time})}
+  const handlerKnobDelayTime = (e) => {setDelayState({feedback: delayState.feedback, time: e})}
 
    const {attributes, listeners, setNodeRef, transform} = useDraggable({
     id: id,
   });
-  console.log(transform && (transform.x+x))
+
    const transformStyle = (transform) ? {
     transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
   } : {};
 
   return (
-    <div style = {{...transformStyle, ...endPosStyle}}>
+    <div style = {{...transformStyle, ...endPosStyle, position: "absolute"}}>
       <Bar onStop={stop} onStart={start} onClose={onClose}> <div ref={setNodeRef} {...listeners} {...attributes}> drone synth </div> </Bar>
       
       

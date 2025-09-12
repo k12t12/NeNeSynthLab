@@ -5,12 +5,12 @@ import getNoteFromInterval from "../../../utils/getNoteFromInterval";
 
 export default function useDroneSynth(init = defaultParametrs) {
   const droneSynth = useRef(null);
-  const [firstOscState, useFirstOscState] = useState(init.firstOsc)
-  const [secondOscState, useSecondOscState] = useState(init.secondOsc)
-  const [thirdOscState, useThirdOscState] = useState(init.thirdOsc)
-  const [vibratoState, useVibratoState] = useState({freq: init.vibratoFreq, depth: init.vibratoDepth})
-  const [filterState, useFilterState] = useState({freq: init.filterFreq, Q: init.filterQ})
-  const [delayState, useDelayState] = useState({time: init.delayTime, feedback: init.delayFeedback})
+  const [firstOscState, setFirstOscState] = useState(init.firstOsc)
+  const [secondOscState, setSecondOscState] = useState(init.secondOsc)
+  const [thirdOscState, setThirdOscState] = useState(init.thirdOsc)
+  const [vibratoState, setVibratoState] = useState({freq: init.vibratoFreq, depth: init.vibratoDepth})
+  const [filterState, setFilterState] = useState({freq: init.filterFreq, Q: init.filterQ})
+  const [delayState, setDelayState] = useState({time: init.delayTime, feedback: init.delayFeedback})
 
   useEffect(() => {
     droneSynth.current = new DroneSynth(init);
@@ -19,7 +19,7 @@ export default function useDroneSynth(init = defaultParametrs) {
         droneSynth.current.stopSound();
       }
     };
-  }, []);
+  }, [droneSynth]);
 
   useEffect(() => {
     droneSynth.current.setOscillator("firstOsc", {freq: firstOscState.freq})
@@ -48,11 +48,6 @@ export default function useDroneSynth(init = defaultParametrs) {
 
   const start = () => droneSynth.current?.startSound();
   const stop = () => droneSynth.current?.stopSound();
-  const setDelay = (state) => useDelayState(state)
-  const setFirstOsc = (state) => useFirstOscState(state)
-  const setSecondOsc = (state) => useSecondOscState(state)
-  const setThirdOsc = (state) => useThirdOscState(state)
-  const setVibrato = (state) => useVibratoState(state)
-  const setFilter = (state) => useFilterState(state)
-    return { start, stop, setFirstOsc, setSecondOsc, setThirdOsc, setVibrato, setFilter, setDelay, firstOscState, secondOscState, thirdOscState, vibratoState, filterState, delayState};
+
+    return { start, stop, setFirstOscState, setSecondOscState, setThirdOscState, setVibratoState, setFilterState, setDelayState, firstOscState, secondOscState, thirdOscState, vibratoState, filterState, delayState};
 }

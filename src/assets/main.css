@@ -9,6 +9,21 @@ body {
    
   
 }
+input[type="number"] {
+  width: auto;
+  height: auto;
+  background-color: white;
+  border-style: solid;
+  border-color: black
+}
+
+button {
+  width: auto;
+  height: auto;
+  background-color: white;
+  border-style: solid;
+  border-color: black
+}
 
 input[type="range"] {
   appearance: none;
@@ -22,14 +37,6 @@ input[type="range"]::-webkit-slider-runnable-track {
   height: 14px;
   border-width: 2px;
   border-style: dotted;
-}
-
-button {
-  width: auto;
-  height: auto;
-  background-color: white;
-  border-style: solid;
-  border-color: black
 }
 
 input[type="range"]::-moz-range-track {

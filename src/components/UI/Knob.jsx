@@ -1,6 +1,5 @@
 import { useCallback, useRef, useEffect, useState, useLayoutEffect } from "react";
 import interpolateToNewRange from "../../utils/interpolateToNewRange";
-
 import styles from "../../assets/knob.module.css"
 
 export default function KnobComponent({onChange, max, min, step, initValue}) {
@@ -11,7 +10,9 @@ export default function KnobComponent({onChange, max, min, step, initValue}) {
     radius: 0
   });
   const [angle, useAngle] = useState(interpolateToNewRange(initValue, min, max, 0, 360)*(-1))
- 
+  useEffect(()=>{
+    useAngle(interpolateToNewRange(initValue, min, max, 0, 360 * (-1)))
+  },[initValue])
   
       const onMouseMove = 
     (ev) => {
@@ -26,7 +27,6 @@ export default function KnobComponent({onChange, max, min, step, initValue}) {
     
    
     useAngle(angle)
-    console.log(value)
     onChange((Math.round(value)*Number(step)).toFixed(afterPoint.length)*1)
 
     }

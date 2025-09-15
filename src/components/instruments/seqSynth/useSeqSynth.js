@@ -15,16 +15,16 @@ export default function useSeqSynth(init = defaultParametrs) {
   ]);
   const [currentStep, setCurrentStep] = useState(0);
   const [envelopeState, setEnvelopeState] = useState({
-    attack: 0,
-    release: 0.1,
+    attack: init.attack,
+    release: init.release,
   });
   const [filterState, setFilterState] = useState({
-    frequency: 1100,
-    Q: 1
+    frequency: init.filterFreq,
+    Q: init.filterQ
  })
  const [delayState, setDelayState] = useState({
-  time: 0.1,
-  feedback: 0.2
+  time: init.delayTime,
+  feedback: init.delayFeedback
  })
  
 

@@ -2,10 +2,9 @@ import getNoteFromInterval from "../../../utils/getNoteFromInterval";
 import useDroneSynth from "./useDroneSynth";
 import Knob from "../../UI/Knob";
 import Bar from "../../UI/Bar";
-import { useWindowSize } from "react-use";
 import { useDraggable } from "@dnd-kit/core";
-
 import styles from "../../../assets/droneSynth.module.css"
+
 export default function DroneSynthComponent({id, endPosStyle, onClose}) {
   const {
     start,
@@ -93,10 +92,10 @@ export default function DroneSynthComponent({id, endPosStyle, onClose}) {
        <div> <label> DELAY </label>
        <div className={styles.effectBlock}>
        <label> time </label>
-      <Knob onChange={handlerKnobDelayTime} max="1" min="0" step = "0.1" initValue={delayState.time}> </Knob>
-      <div>{delayState.time} </div>
-      <label> wet </label>
-      <Knob onChange={handlerKnobDelayFeedback} max="1" min="0" step = "0.1" initValue={delayState.feedback}> </Knob>
+      <Knob onChange={handlerKnobDelayTime} max="1" min="0.1" step = "0.1" initValue={delayState.time}> </Knob>
+      <div>{(Math.round(delayState.time * 1000)) + "ms"} </div>
+      <label> fe-back </label>
+      <Knob onChange={handlerKnobDelayFeedback} max="1" min="0" step = "0.1" initValue={delayState.feedback * 100 + "%"}> </Knob>
        <div>{delayState.feedback*100}%</div>
        </div>
       </div>

@@ -34,7 +34,9 @@ function App() {
     <>
     <button onClick={()=>addInstrument(DroneSynth)}> add drone synth </button>
     <button onClick={()=>addInstrument(SeqSynth)}> add sequencer synth </button>
+    <button onClick={()=>addInstrument(NoiseGenerator)}> add noise generator </button>
     <DndContext onDragEnd={handleDragEnd}>
+      
     {instruments.map((ins)=>{
       const Instrument = ins.component
       return (
@@ -53,7 +55,6 @@ function App() {
       )
       }
 
-      <NoiseGenerator> </NoiseGenerator>
     </DndContext>
     </>
   )

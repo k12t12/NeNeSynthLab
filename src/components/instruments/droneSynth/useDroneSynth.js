@@ -43,7 +43,7 @@ export default function useDroneSynth(init = defaultParametrs) {
 
   useEffect(()=>{
     droneSynth.current.setDelay(delayState)
-    console.log(1)
+    
   }, [delayState])
 
   const start = () => droneSynth.current?.startSound();

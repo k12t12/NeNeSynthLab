@@ -52,7 +52,7 @@ const handlerKnobFilterQ = (e) => { setFilterState({frequency: filterState.frequ
 
 
  const handlerButtonInterval = () => {
-  const intervals = ["1n", "2n", "4n", "16n", "32n", "64n", "128n", "256n"]
+  const intervals = ["1n", "2n", "4n", "8n", "16n", "32n", "64n", "128n", "256n"]
   setInterval(intervals[((intervals.indexOf(interval) + 1) % intervals.length)])
 
  }
@@ -71,8 +71,8 @@ const handlerKnobFilterQ = (e) => { setFilterState({frequency: filterState.frequ
         <label> ENVELOPE </label>
       <div className={styles.effectBlock}> 
 
-      <div> attack <Knob initValue = {envelopeState.attack} step="0.01" max="1" min="0" onChange={handlerKnobAttack}> </Knob> {envelopeState.attack } </div>
-      <div> release<Knob initValue = {envelopeState.release} step="0.01" max="1" min="0" onChange={handlerKnobRelease}> </Knob> {envelopeState.release }  </div>
+      <div> attack <Knob initValue = {envelopeState.attack} step="0.01" max="3" min="0" onChange={handlerKnobAttack}> </Knob> {(Math.round(envelopeState.attack * 1000)) + "ms" } </div>
+      <div> release<Knob initValue = {envelopeState.release} step="0.01" max="3" min="0" onChange={handlerKnobRelease}> </Knob> {(Math.round(envelopeState.release * 1000)) + "ms" }  </div>
       </div>
       </div>
 
@@ -86,7 +86,7 @@ const handlerKnobFilterQ = (e) => { setFilterState({frequency: filterState.frequ
       <div>
         <label> DELAY </label>
       <div className={styles.effectBlock}>
-      <div> time <Knob initValue = {delayState.time} step="0.1" max="1" min="0" onChange={handlerKnobDelayTime}> </Knob> {delayState.time} </div>
+      <div> time <Knob initValue = {delayState.time} step="0.01" max="3" min="0.01" onChange={handlerKnobDelayTime}> </Knob> {(Math.round(delayState.time * 1000)) + "ms"} </div>
       <div> feedback <Knob initValue = {delayState.feedback} step="0.1" max="1" min="0" onChange={handlerKnobDelayFeedback}> </Knob> {delayState.feedback * 100 + "%"} </div> 
       </div>
       </div>

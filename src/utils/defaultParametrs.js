@@ -27,15 +27,35 @@ const droneSynthDefaultParametrs = {
   delayFeedback: 0.1
 }
 
-const seqSynthDefaultParametrs = {
-  sequences: [
-    ["C4", "C4", "C4", "C4", "C4", "C4", "C4","C4"],
-    ["C4", "C4", "C4", "C4", "C4", "C4", "C4","C4"],
-    ["C4", "C4", "C4", "C4", "C4", "C4", "C4","C4"],
-    ["C4", "C4", "C4", "C4", "C4", "C4", "C4","C4"]
-  ],
-  currentSequenceIndex: 0,
-  interval: "4n"
+const noiseGeneratorDefaultParametrs = {
+  xRatio:0.03,
+  yRatio: 0.3,
+  filterFreq: 2000,
+  filterQ: 10,
+  delayTime: 0.1,
+  delayFeedback: 0.1,
+  lfoFreq: 1,
+  lfoAmp: 1000
+
 
 }
-export {droneSynthDefaultParametrs, seqSynthDefaultParametrs}
+
+const seqSynthDefaultParametrs = {
+  sequences: [
+    ["C4", "C4", "C4", "C4", "C4", "C4", "C4", "C4"],
+    ["C4", "C4", "C4", "C4", "C4", "C4", "C4", "C4"],
+    ["C4", "C4", "C4", "C4", "C4", "C4", "C4", "C4"],
+    ["C4", "C4", "C4", "C4", "C4", "C4", "C4", "C4"]
+  ], 
+  currentSequenceIndex: 0,
+  interval: "4n",
+  filterFreq: 1000,
+  filterQ: 0,
+  delayTime: 0.1,
+  delayFeedback: 0.1,
+  attack: 0,
+  release: 0.1
+
+}
+
+export {droneSynthDefaultParametrs, seqSynthDefaultParametrs, noiseGeneratorDefaultParametrs}

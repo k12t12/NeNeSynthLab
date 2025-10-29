@@ -1,6 +1,7 @@
-import { Player, FeedbackDelay, Filter, LFO, getContext, now } from "tone";
+import { Player, FeedbackDelay, Filter, LFO, Gain, getContext, now } from "tone";
 import findZeroCrossing from "../utils/findZeroCrossing";
-import Perlin from "../utils/perlin";
+import masterChain from "./masterChain";
+
 const FILTER_FREQ_MAX = 8000;
 
 export default class NoiseGenerator {
@@ -17,10 +18,11 @@ export default class NoiseGenerator {
     this.filterFreq = init.filterFreq; //this parameter is intended to make the LFO know what value to apply the amplitude to
     this.isStart = false
 
-    this.delay = new FeedbackDelay(init.delayTime, init.delayFeedback).toDestination();
-    this.filter = new Filter(this.filterFreq, "lowpass").connect(this.delay);
-    this.filter.set({ Q: init.filterQ });
-    this.filter.toDestination();
+    this.gain = new Gain(init.volume)
+    masterChain.connectToMaster(this.gain)
+    this.delay = new FeedbackDelay(init.delayTime, init.delayFeedback).connect(this.gain)
+    this.filter = new Filter(this.filterFreq, "lowpass").connect(this.delay).connect(this.gain);
+   
     this.lfo = new LFO(
       init.lfoFreq,
       Math.max(this.filterFreq - this.LFOamp, 0),
@@ -30,8 +32,14 @@ export default class NoiseGenerator {
       .start();
   }
 
+  setGainVolume(newVolume) {
+    console.log(newVolume)
+        this.gain.gain.rampTo(newVolume, 0.005)
+    }
+
   setDelay(newFeedback, newTime) {
-    this.delay.set({ feedback: newFeedback, time: newTime });
+    this.delay.feedback.rampTo(newFeedback, 0.005)
+    this.delay.delayTime.rampTo(newTime,0.05)
 
     // we switch the wet value to 0 when the feedback is 0, thus disabling the delay 
   if (newFeedback == 0) {
@@ -44,7 +52,7 @@ export default class NoiseGenerator {
   setFilter(newFreq, newQ) {
     this.filterFreq = newFreq;
     this.filter.set({ frequency: newFreq, Q: newQ });
-    this.setLFO(this.lfo.get().frequency, this.LFOamp); //When we change frequency, we need to update lfo min, max too
+    this.setLFO(this.lfo.get().frequency, this.LFOamp); //When we change frequency, we need to update lfo min and max too
   }
 
   setLFO(newFreq, newAmp) {
@@ -55,9 +63,8 @@ export default class NoiseGenerator {
       frequency: newFreq,
     });
   }
-
+  
   updateNoise(xRatio, yRatio) {
-    const perlin = new Perlin();
     if (this.player) {
       this.player.dispose();
     }
@@ -67,11 +74,24 @@ export default class NoiseGenerator {
       getContext().sampleRate * this.duration,
       getContext().sampleRate
     );
-    this.data = this.buffer.getChannelData(0);
-    for (let i = 0; i < this.data.length; i++) {
-      this.data[i] = Math.abs(perlin.get((i * xRatio) / 1000, i * yRatio));
-    }
+    
+    let perlinNoiseData = null
+    //we need worker to calculate large audio data
+    const worker = new Worker('/src/utils/generatePerlinNoiseBuffer.js', {type: 'module'})
 
+    worker.postMessage({length: this.buffer.length, xRatio: xRatio, yRatio: yRatio})
+
+    //when calculations are completed:
+    worker.onmessage = (e) => {
+      console.log(this.buffer)
+      perlinNoiseData = e.data
+      this.channel = this.buffer.getChannelData(0); // link to audio buffer channel
+    
+    // copy perlin noise data to audio channel
+    for (let i in perlinNoiseData){
+      this.channel[i] = perlinNoiseData[i]
+    }
+    
     this.player = new Player({
       url: this.buffer,
       loop: true,
@@ -80,18 +100,24 @@ export default class NoiseGenerator {
       autostart: true,
       fadeIn: 10,
     }).connect(this.filter);
+
     if (this.isStart) {
       this.startSound()
     } 
+    };
   }
 
   startSound() {
-    this.isStart = true
-    this.player.start(now());
+    if (this.player) {
+      this.isStart = true
+      this.player.start(now());
+    }
   }
 
   stopSound() {
-    this.isStart = false
-    this.player.stop(now());
+    if (this.player) {
+      this.isStart = false
+      this.player.stop(now());
+    }
   }
 }

@@ -1,37 +1,46 @@
-import {getTransport } from "tone";
+import {getTransport, now } from "tone";
 
 export default class Sequencer{
     constructor(init, onStepUpdate, soundActionCallback){
         this.soundActionCallback = soundActionCallback
-      this.interval = "4n"
-      this.isPlaying = false
+        this.seqLen = init.seqLen
+        this.interval = init.interval
+        this.isPlaying = false
         this.onStepUpdate = onStepUpdate; // callback 
         this.currentStep = 0;
-        this.isPlaying = false;
         this.startTime = 0
         this.currentSequenceIndex = 0
         this.sequences = init.sequences.map(sequence => [...sequence]);
          this.eventId = null;
     }
 createSequencer(time) {
+  
   this.eventId = getTransport().scheduleRepeat((time) => {
+      
       if (this.isPlaying) {
-      this.soundActionCallback(time, this.sequences[this.currentSequenceIndex][this.currentStep])
-      this.onStepUpdate(this.currentStep)
-      this.currentStep = (this.currentStep + 1) % 8
+        
+        if (this.sequences[this.currentSequenceIndex][this.currentStep]) {
+          this.soundActionCallback(time, this.sequences[this.currentSequenceIndex][this.currentStep])
+        }
+
+        if (this.onStepUpdate) {this.onStepUpdate(this.currentStep)}
+
+        this.currentStep = (this.currentStep + 1) % this.seqLen
       }
-    }, this.interval, time??null);
+    }, this.interval, time || now());
 }
 
 setSequencer(newCurrentSequenceIndex, interval){
-  const now = getTransport().seconds;
   const barDuration = getTransport().toSeconds("1m");
-  const nextBarTime = Math.ceil(now / barDuration) * barDuration;
+  const nextBarTime = (getTransport().position.split(':')[0]*1+1) * barDuration;
+  
   getTransport().scheduleOnce(()=> {
+    
   getTransport().clear(this.eventId)
-   this.interval = interval
+   this.interval = interval    
    this.currentSequenceIndex = newCurrentSequenceIndex
-   this.createSequencer()
+   this.createSequencer(nextBarTime)
+    
   }, nextBarTime)
 }
 
@@ -44,18 +53,27 @@ stopSound(){
 this.isPlaying = false
 getTransport().clear(this.eventId)
 this.currentStep = 0
-this.onStepUpdate(this.currentStep)
+if (this.onStepUpdate) {this.onStepUpdate(this.currentStep)}
 }
 
 startSound(){
   this.isPlaying = true
+  
   getTransport().clear(this.eventId)
   const now = getTransport().seconds;
+  
   const barDuration = getTransport().toSeconds("1m");
-  const nextBarTime = Math.ceil(now / barDuration) * barDuration;
-    this.createSequencer(nextBarTime)
+  const nextBarTime = (getTransport().position.split(':')[0]*1+1) * barDuration;
+  
+
+  this.createSequencer(nextBarTime)
   this.currentStep = 0
-  this.onStepUpdate(this.currentStep)
+
+  if (this.onStepUpdate) {this.onStepUpdate(this.currentStep)}
 }
 
+dispose(){
+ getTransport().clear(this.eventId)
+ 
+}
 }

@@ -1,48 +1,36 @@
 import { useState } from "react"
 import { DndContext } from "@dnd-kit/core"
-import DroneSynth from "./components/instruments/droneSynth/droneSynth"
-import SeqSynth from "./components/instruments/seqSynth/seqSynth"
-import NoiseGenerator from "./components/instruments/noiseSynth/noiseGenerator"
+import Menu from "./components/Menu"
+import useInstrumentsStore from "./store/instrumentsStore"
 
 import "./assets/main.css"
 
 function App() {
-  const [instruments, setInstruments] = useState([])
-  const [index, setIndex] = useState(0)
-  const addInstrument = (instrumentComponent) => {
-    setInstruments([...instruments, {id: index, x: 92, y:92, component: instrumentComponent}])
-    setIndex(index + 1)
-  }
+  const instruments = useInstrumentsStore((state) => state.instruments)
+  const setInstrument = useInstrumentsStore((state) => state.setInstrument)
+  const addInstrument = useInstrumentsStore((state) => state.addInstrument)
+  const removeInstrument = useInstrumentsStore((state) => state.removeInstrument) 
+  
+  
+
  const handleDragEnd = (event) => {
-
-  setInstruments((prev) => {
-    console.log(prev)
-    return prev.map(instrument=>{
-      console.log(instrument.x + event.delta.x)
-      return ((instrument.id == event.active.id) ) ? {
-        ...instrument,
-        x: instrument.x + event.delta.x,
-        y: instrument.y + event.delta.y
-      } : instrument
-    }
-    )
-  })
-
-
+  const currentInstrument = instruments.find(instr => instr.id === event.active.id);
+  setInstrument(event.active.id, {
+    x: currentInstrument.x + event.delta.x,
+    y: currentInstrument.y + event.delta.y
+  }
+   )
  }
   return (
     <>
-    <button onClick={()=>addInstrument(DroneSynth)}> add drone synth </button>
-    <button onClick={()=>addInstrument(SeqSynth)}> add sequencer synth </button>
-    <button onClick={()=>addInstrument(NoiseGenerator)}> add noise generator </button>
     <DndContext onDragEnd={handleDragEnd}>
       
     {instruments.map((ins)=>{
-      const Instrument = ins.component
+      const Instrument = ins.comp
       return (
        <Instrument key={ins.id} id={ins.id} 
      onClose={()=>{
-      setInstruments(instruments.filter(el => el !== ins))
+      removeInstrument(ins.id)
      }
     }
     x = {ins.x}
@@ -56,6 +44,7 @@ function App() {
       }
 
     </DndContext>
+    <Menu addInstrumentCallback={addInstrument}> </Menu>
     </>
   )
 }

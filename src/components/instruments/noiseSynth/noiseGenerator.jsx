@@ -9,6 +9,8 @@ const MIN_RATIO = 0
 
 export default function noiseGeneratorComponent({id, endPosStyle, onClose}) {
     const {
+        volume,
+        setVolume,
         xRatioPrev,
         setXratioPrev,
         yRatioPrev,
@@ -66,7 +68,7 @@ export default function noiseGeneratorComponent({id, endPosStyle, onClose}) {
 
     return (
         <div style = {{...transformStyle, ...endPosStyle, position: "absolute"}}>
-              <Bar onStop={stop} onStart={start} onClose={onClose}> <div ref={setNodeRef} {...listeners} {...attributes}>  noise generator </div> </Bar>
+              <Bar volume={volume} onVolumeChange={(e)=>{setVolume(e.target.value)}} onStop={stop} onStart={start} onClose={onClose}> <div ref={setNodeRef} {...listeners} {...attributes}>  noise generator </div> </Bar>
 
         <div className={styles.noiseGenerator}>
         <div className={styles.ratioControls}> 
@@ -103,7 +105,7 @@ export default function noiseGeneratorComponent({id, endPosStyle, onClose}) {
               </div>
         <label> DELAY </label>
               <div className={styles.effectBlock}>
-              <div> time <Knob initValue = {delayState.time} step="0.1" max="1" min="0.1" onChange={handlerKnobDelayTime}> </Knob> {(Math.round(delayState.time * 1000)) + "ms"} </div>
+              <div> time <Knob initValue = {delayState.time} step="0.01" max="1" min="0.01" onChange={handlerKnobDelayTime}> </Knob> {delayState.time} </div>
               <div> feedback <Knob initValue = {delayState.feedback} step="0.1" max="1" min="0" onChange={handlerKnobDelayFeedback}> </Knob> {delayState.feedback * 100 + "%"} </div> 
               </div>
               </div>

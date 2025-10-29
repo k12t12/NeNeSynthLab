@@ -6,12 +6,13 @@ import { Frequency } from "tone";
 
 export default function useSeqSynth(init = defaultParametrs) {
   const seqSynth = useRef(null);
-  const [interval, setInterval] = useState(init.interval);
+  const [interval, setInterval] = useState(init.seq.interval);
+  const [volume, setVolume ] = useState(init.volume)
   const [currentSequenceIndex, setCurrentSequenceIndex] = useState(
-    init.currentSequenceIndex
+    init.seq.currentSequenceIndex
   );
   const [currentSequence, setCurrentSequence] = useState([
-    ...init.sequences[init.currentSequenceIndex],
+    ...init.seq.sequences[init.seq.currentSequenceIndex],
   ]);
   const [currentStep, setCurrentStep] = useState(0);
   const [envelopeState, setEnvelopeState] = useState({
@@ -32,14 +33,19 @@ export default function useSeqSynth(init = defaultParametrs) {
     const onStepUpdate = (stepIndex) => {
       setCurrentStep(stepIndex);
     };
-    seqSynth.current = new SeqSynth(defaultParametrs, onStepUpdate);
+    seqSynth.current = new SeqSynth(init, onStepUpdate);
     return () => {
       if (seqSynth.current) {
+        console.log("deletedelte")
         seqSynth.current.sequencer.stopSound();
+        seqSynth.current.dispose()
       }
     };
   }, []);
 
+  useEffect(() => {
+    seqSynth.current.setGainVolume(volume)
+  },[volume])
 
   useEffect(() => {
     seqSynth.current.setEnvelope(envelopeState.attack, envelopeState.release);
@@ -88,6 +94,8 @@ export default function useSeqSynth(init = defaultParametrs) {
     filterState,
     setFilterState,
     delayState,
-    setDelayState
+    setDelayState,
+    volume,
+    setVolume
   };
 }

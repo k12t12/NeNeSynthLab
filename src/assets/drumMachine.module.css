@@ -1,0 +1,41 @@
+.drumMachine {
+    padding-top: 20px;
+    padding-left: 17px;
+    border-style: solid;
+    width: 615px;
+    height: 290px;
+    background-color: white;
+    
+ 
+}
+
+.knobs {
+    display: flex;
+    text-align: center;
+}
+.patternName {
+    margin-top: 5px;
+    text-align: right;
+    width: 80px;
+    height: 10px;
+    font-size: 14px
+}
+
+.effectBlock {
+    width: 140px;
+    display: flex;
+    gap: 10px;
+    border-style: solid;
+    border-width: 1px;
+    text-align: center;
+    margin-right: 10px;
+    margin-bottom: 15px;
+}
+
+.pattern {
+    display: flex;
+}
+
+.patternEditor {
+    display: flex;
+}

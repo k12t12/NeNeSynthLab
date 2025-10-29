@@ -5,6 +5,7 @@ import getNoteFromInterval from "../../../utils/getNoteFromInterval";
 
 export default function useDroneSynth(init = defaultParametrs) {
   const droneSynth = useRef(null);
+  const [volume, setVolume] = useState(init.volume)
   const [firstOscState, setFirstOscState] = useState(init.firstOsc)
   const [secondOscState, setSecondOscState] = useState(init.secondOsc)
   const [thirdOscState, setThirdOscState] = useState(init.thirdOsc)
@@ -20,6 +21,10 @@ export default function useDroneSynth(init = defaultParametrs) {
       }
     };
   }, [droneSynth]);
+
+  useEffect(()=> {
+    droneSynth.current.setGainVolume(volume)
+  }, [volume])
 
   useEffect(() => {
     droneSynth.current.setOscillator("firstOsc", {freq: firstOscState.freq})
@@ -49,5 +54,20 @@ export default function useDroneSynth(init = defaultParametrs) {
   const start = () => droneSynth.current?.startSound();
   const stop = () => droneSynth.current?.stopSound();
 
-    return { start, stop, setFirstOscState, setSecondOscState, setThirdOscState, setVibratoState, setFilterState, setDelayState, firstOscState, secondOscState, thirdOscState, vibratoState, filterState, delayState};
+    return { start,
+       stop,
+      setFirstOscState,
+      setSecondOscState,
+      setThirdOscState,
+      setVibratoState,
+      setFilterState,
+      setDelayState,
+      firstOscState,
+      secondOscState,
+      thirdOscState,
+      vibratoState,
+      filterState,
+      delayState,
+      volume,
+      setVolume};
 }

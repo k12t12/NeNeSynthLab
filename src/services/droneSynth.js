@@ -1,21 +1,33 @@
-import { Filter, Oscillator, Vibrato, FeedbackDelay} from "tone"
+import { gainToDb, Filter, Oscillator, Vibrato, FeedbackDelay, Gain} from "tone"
+import masterChain from "./masterChain"
 
 export default class DroneSynth {
-    constructor(init) {
-        this.delay = new FeedbackDelay(init.delayTime, init.delayFeedback)
-        this.vibrato = new Vibrato(init.vibratoFreq, init.vibratoDepth).connect(this.delay)
-        this.vibrato.toDestination()
+    constructor(init) { 
+      console.log(init.volume)
+        this.gain = new Gain(init.volume)
+        masterChain.connectToMaster(this.gain)
+
+        this.delay = new FeedbackDelay(init.delayTime, init.delayFeedback).connect(this.gain)
+        this.vibrato = new Vibrato(init.vibratoFreq, init.vibratoDepth).connect(this.delay).connect(this.gain)
+        
+        
         this.filter = new Filter(init.filterFreq, "lowpass").connect(this.vibrato)
         this.oscs = {
         firstOsc: new Oscillator(init.firstOsc.freq, "square10").connect(this.filter),
         secondOsc: new Oscillator(init.secondOsc.freq, "square10").connect(this.filter),
         thirdOsc: new Oscillator(init.thirdOsc.freq, "square10").connect(this.filter)
       }
-        this.delay.toDestination()
+        this.stopSound()
+
     }
+
+    setGainVolume(newVolume){
+      this.gain.gain.rampTo(newVolume, 0.005)
+    }
+
     setDelay(parametrs){
       if (parametrs.time) {
-        this.delay.set({delayTime: parametrs.time})
+        this.delay.delayTime.rampTo(parametrs.time, 0.5)
       }
       if (parametrs.feedback) {
         this.delay.set({feedback: parametrs.feedback})
@@ -39,7 +51,7 @@ export default class DroneSynth {
     }
     setVibrato(parametrs){
       if (parametrs.freq){ this.vibrato.set({frequency: parametrs.freq})}
-      if (parametrs.depth){this.vibrato.set({depth: parametrs.depth})}
+      if (parametrs.depth){this.vibrato.depth.rampTo(parametrs.depth, 0.005)}
     }
     stopSound(){
         for (let osc in this.oscs) {

@@ -21,6 +21,8 @@ export default function DroneSynthComponent({id, endPosStyle, onClose}) {
     vibratoState,
     filterState,
     delayState,
+    volume,
+    setVolume
   } = useDroneSynth();
 
   const handlerSliderFirstOscFreq = (e) => { setFirstOscState({interval: Number(e.target.value), freq: getNoteFromInterval(Number(e.target.value)).freq, noteName: getNoteFromInterval(Number(e.target.value)).name})}
@@ -43,7 +45,7 @@ export default function DroneSynthComponent({id, endPosStyle, onClose}) {
 
   return (
     <div style = {{...transformStyle, ...endPosStyle, position: "absolute"}}>
-      <Bar onStop={stop} onStart={start} onClose={onClose}> <div ref={setNodeRef} {...listeners} {...attributes}> drone synth </div> </Bar>
+      <Bar volume = {volume} onVolumeChange={(e)=>{setVolume(e.target.value)}} onStop={stop} onStart={start} onClose={onClose}> <div ref={setNodeRef} {...listeners} {...attributes} > drone synth </div> </Bar>
       
       
       <div className={styles.droneSynth}>
@@ -92,8 +94,8 @@ export default function DroneSynthComponent({id, endPosStyle, onClose}) {
        <div> <label> DELAY </label>
        <div className={styles.effectBlock}>
        <label> time </label>
-      <Knob onChange={handlerKnobDelayTime} max="1" min="0.1" step = "0.1" initValue={delayState.time}> </Knob>
-      <div>{(Math.round(delayState.time * 1000)) + "ms"} </div>
+      <Knob onChange={handlerKnobDelayTime} max="1" min="0.01" step = "0.01" initValue={delayState.time}> </Knob>
+      <div>{delayState.time} </div>
       <label> fe-back </label>
       <Knob onChange={handlerKnobDelayFeedback} max="1" min="0" step = "0.1" initValue={delayState.feedback * 100 + "%"}> </Knob>
        <div>{delayState.feedback*100}%</div>

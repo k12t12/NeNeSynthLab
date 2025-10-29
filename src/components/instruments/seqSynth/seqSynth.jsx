@@ -8,9 +8,11 @@ import getIntervalFromNote from "../../../utils/getIntervalFromNote";
 import { seqSynthDefaultParametrs } from "../../../utils/defaultParametrs";
 import { ftom } from "tone";
 
-export default function seqSynthComponent({id, endPosStyle}) {
+export default function seqSynthComponent({id, endPosStyle, onClose}) {
   
 const {
+    volume,
+    setVolume,
     start,
     stop,
     currentSequence,
@@ -40,10 +42,11 @@ const handlerKnobAttack = (e) => { setEnvelopeState({attack: e, release: envelop
 const handlerKnobFilterFreq = (e) => { setFilterState({frequency: e, Q: filterState.Q})}
 const handlerKnobFilterQ = (e) => { setFilterState({frequency: filterState.frequency, Q: e})}
 
- const handlerKnobCurrentSequence = (newValue, curIndex) => {
-    let noteNewValue = getNoteFromInterval(newValue).name
+ const handlerCurrentSequence = (newValue, curIndex) => {
+    let noteNewValue = (newValue !== null) ? getNoteFromInterval(newValue).name : null
     setCurrentSequence(prev => prev.map((x,index)=> index==curIndex ? noteNewValue: x))
  }
+ 
 
  const handlerButtonCurrenSequenceIndex = (newIndex)=> {
   setCurrentSequenceIndex(newIndex)
@@ -52,7 +55,7 @@ const handlerKnobFilterQ = (e) => { setFilterState({frequency: filterState.frequ
 
 
  const handlerButtonInterval = () => {
-  const intervals = ["1n", "2n", "4n", "8n", "16n", "32n", "64n", "128n", "256n"]
+  const intervals = ["1n", "2n", "4n", "8n", "16n", "32n"]
   setInterval(intervals[((intervals.indexOf(interval) + 1) % intervals.length)])
 
  }
@@ -63,7 +66,7 @@ const handlerKnobFilterQ = (e) => { setFilterState({frequency: filterState.frequ
 
     return (
         <div style={{...transformStyle, ...endPosStyle, position: "absolute"}} >
-            <Bar onStop={stop} onStart={start}> <div ref={setNodeRef} {...listeners} {...attributes}> sequencer synth </div></Bar>
+            <Bar volume={volume} onVolumeChange={(e)=>{setVolume(e.target.value)}} onStop={stop} onStart={start} onClose={onClose}> <div ref={setNodeRef} {...listeners} {...attributes}> sequencer synth </div></Bar>
 
 <div className={styles.seqSynth}>
       <div className={styles.knobs}> 
@@ -86,7 +89,7 @@ const handlerKnobFilterQ = (e) => { setFilterState({frequency: filterState.frequ
       <div>
         <label> DELAY </label>
       <div className={styles.effectBlock}>
-      <div> time <Knob initValue = {delayState.time} step="0.01" max="3" min="0.01" onChange={handlerKnobDelayTime}> </Knob> {(Math.round(delayState.time * 1000)) + "ms"} </div>
+      <div> time <Knob initValue = {delayState.time} step="0.01" max="1" min="0.01" onChange={handlerKnobDelayTime}> </Knob> {delayState.time} </div>
       <div> feedback <Knob initValue = {delayState.feedback} step="0.1" max="1" min="0" onChange={handlerKnobDelayFeedback}> </Knob> {delayState.feedback * 100 + "%"} </div> 
       </div>
       </div>
@@ -104,8 +107,10 @@ const handlerKnobFilterQ = (e) => { setFilterState({frequency: filterState.frequ
    <div className={styles.knobs}> {
     currentSequence.map((x, ind)=>(<div key={ind}>
       
-    <button> {currentStep==(ind) ? "O": "_"} </button>
-    <Knob  initValue = {getIntervalFromNote(x)} step="1" max="-21" min="26" onChange={(e)=>handlerKnobCurrentSequence(e, ind)}> </Knob> {x}
+    <button onClick={()=>{
+      handlerCurrentSequence(null, ind)
+    }}> {currentStep==(ind) ? "O": "_"} </button>
+    <Knob  initValue = {getIntervalFromNote(x)} step="1" max="-21" min="26" onChange={(e)=>handlerCurrentSequence(e, ind)}> </Knob> {x}
       </div>
     )
     )

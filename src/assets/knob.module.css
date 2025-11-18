@@ -9,13 +9,15 @@
     cursor: default;
     border-style: dotted
 }
-button:focus {
-    background: none;
-    outline: none;
-    box-shadow: none;
-    color: inherit;
-    cursor: default;
+
+.knob:active{
+    color: black;
 }
+
+.knob:hover{
+    cursor:grab;
+}
+
 .arrow {
     margin-left: 90%;
     font-size:26px

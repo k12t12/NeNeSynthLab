@@ -8,35 +8,26 @@ const MIN_RATIO = 0
 
 
 export default function noiseGeneratorComponent({id, endPosStyle, onClose}) {
-    const {
-        volume,
-        setVolume,
-        xRatioPrev,
-        setXratioPrev,
-        yRatioPrev,
-        setYratioPrev,
-        xRatio,
-        yRatio,
-        setXratio,
-        setYratio,
-        setDelayState,
-    delayState,
-    setFilterState,
-    filterState,
-    setlfoState,
-    lfoState,
+    const  {
+    instrument,
+    updateInstrument,
+    yRatioPrev,
+    setYratioPrev,
+    xRatioPrev,
+    setXratioPrev,
     start,
-    stop
-    } = useNoiseGenerator()
+    stop,
+    isPlaying
+  } = useNoiseGenerator(id)
 
-    const handlerKnobFilterFreq = (e) => { setFilterState({frequency: e, Q: filterState.Q})}
-    const handlerKnobFilterQ = (e) => { setFilterState({frequency: filterState.frequency, Q: e})}
+    const handlerKnobFilterFreq = (e) => {updateInstrument({filterFreq: e})}
+    const handlerKnobFilterQ = (e) => {updateInstrument({filterQ: e})}
 
-    const handlerKnobDelayFeedback = (e) => {setDelayState({feedback: e, time: delayState.time})}
-    const handlerKnobDelayTime = (e) => {setDelayState({feedback: delayState.feedback, time: e})}
+    const handlerKnobDelayFeedback = (e) => {updateInstrument({delayFeedback: e})}
+    const handlerKnobDelayTime = (e) => {updateInstrument({delayTime: e})}
 
-    const handlerKnoblfoFreq = (e) => { setlfoState({amp: lfoState.amp, freq: e})}
-    const handlerKnoblfoAmp = (e) => { setlfoState({amp: e, freq: lfoState.freq})}
+    const handlerKnoblfoFreq = (e) => {updateInstrument({lfoFreq: e})}
+    const handlerKnoblfoAmp = (e) => {updateInstrument({lfoAmp: e})}
 
     const handlerNumberXRatio = (e)=> {
         let value = e.target.value
@@ -53,8 +44,8 @@ export default function noiseGeneratorComponent({id, endPosStyle, onClose}) {
             setYratioPrev(value)
     }
     const handlerButtonApplyRatioChange = () => {
-        setXratio(xRatioPrev)
-        setYratio(yRatioPrev)
+        updateInstrument({xRatio: xRatioPrev})
+        updateInstrument({yRatio: yRatioPrev})
     }
 
     
@@ -68,7 +59,7 @@ export default function noiseGeneratorComponent({id, endPosStyle, onClose}) {
 
     return (
         <div style = {{...transformStyle, ...endPosStyle, position: "absolute"}}>
-              <Bar volume={volume} onVolumeChange={(e)=>{setVolume(e.target.value)}} onStop={stop} onStart={start} onClose={onClose}> <div ref={setNodeRef} {...listeners} {...attributes}>  noise generator </div> </Bar>
+              <Bar isPlaying={isPlaying} volume={instrument?.volume} onVolumeChange={(e)=>{updateInstrument({volume: e.target.value})}} onStop={stop} onStart={start} onClose={onClose}> <div ref={setNodeRef} {...listeners} {...attributes}>  noise generator </div> </Bar>
 
         <div className={styles.noiseGenerator}>
         <div className={styles.ratioControls}> 
@@ -88,8 +79,8 @@ export default function noiseGeneratorComponent({id, endPosStyle, onClose}) {
         <div>
                 <label> FILTER </label>
               <div className={styles.effectBlock}>
-              <div> freq<Knob initValue = {filterState.frequency} step="1" max="8000" min="0" onChange={handlerKnobFilterFreq}> </Knob> {filterState.frequency + "Hz"}</div>
-              <div> Q <Knob initValue = {filterState.Q} step="1" max="20" min="0" onChange={handlerKnobFilterQ}> </Knob> {filterState.Q} </div> 
+              <div> freq<Knob initValue = {instrument?.filterFreq} step="1" max="8000" min="0" onChange={handlerKnobFilterFreq}> </Knob> {instrument?.filterFreq + "Hz"}</div>
+              <div> Q <Knob initValue = {instrument?.filterQ} step="1" max="20" min="0" onChange={handlerKnobFilterQ}> </Knob> {instrument?.filterQ} </div> 
               </div>
               </div>
 
@@ -98,15 +89,15 @@ export default function noiseGeneratorComponent({id, endPosStyle, onClose}) {
             <div>
         <label> FILTER LFO </label>
               <div className={styles.effectBlock}>
-              <div> freq <Knob initValue = {lfoState.freq} step="0.01" max="2" min="0" onChange={handlerKnoblfoFreq}> </Knob> {lfoState.freq + "Hz"} </div>
-              <div> amp <Knob initValue = {lfoState.amp} step="10" max="8000" min="0" onChange={handlerKnoblfoAmp}> </Knob> {lfoState.amp} </div>
+              <div> freq <Knob initValue = {instrument?.lfoFreq} step="0.01" max="2" min="0" onChange={handlerKnoblfoFreq}> </Knob> {instrument?.lfoFreq + "Hz"} </div>
+              <div> amp <Knob initValue = {instrument?.lfoAmp} step="10" max="8000" min="0" onChange={handlerKnoblfoAmp}> </Knob> {instrument?.lfoAmp} </div>
               </div>
               </div>
               </div>
         <label> DELAY </label>
               <div className={styles.effectBlock}>
-              <div> time <Knob initValue = {delayState.time} step="0.01" max="1" min="0.01" onChange={handlerKnobDelayTime}> </Knob> {delayState.time} </div>
-              <div> feedback <Knob initValue = {delayState.feedback} step="0.1" max="1" min="0" onChange={handlerKnobDelayFeedback}> </Knob> {delayState.feedback * 100 + "%"} </div> 
+              <div> time <Knob initValue = {instrument?.delayTime} step="0.01" max="1" min="0.01" onChange={handlerKnobDelayTime}> </Knob> {instrument?.delayTime} </div>
+              <div> feedback <Knob initValue = {instrument?.delayFeedback} step="0.1" max="1" min="0" onChange={handlerKnobDelayFeedback}> </Knob> {instrument?.delayFeedback * 100 + "%"} </div> 
               </div>
               </div>
         

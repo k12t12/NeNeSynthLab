@@ -9,13 +9,20 @@ class MasterChain {
     }
 
     setReverb(newWet, newDecay){
-
-        this.reverb.decay = newDecay
-        this.reverb.wet.rampTo(newWet, 0.005)
+        newWet = newWet / 1
+        newDecay = newDecay / 1
+        
+        if (newDecay >= 0.1){
+          
+            this.reverb.decay = newDecay
+        }
+        if (newWet <=1) {
+         
+            this.reverb.wet.value = newWet
+        }
     }
 
     connectToMaster(module) {
-        console.log(this.gain)
         module.connect(this.gain)
     }
 }

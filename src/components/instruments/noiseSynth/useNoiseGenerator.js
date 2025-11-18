@@ -1,28 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 import NoiseGenerator from "../../../services/noiseGenerator";
 import { noiseGeneratorDefaultParametrs as defaultParametrs} from "../../../utils/defaultParametrs";
+import useInstrumentsStore from "../../../store/instrumentsStore";
 
-export default function useNoiseGenerator(init = defaultParametrs) {
+export default function useNoiseGenerator(id) {
   const noiseGenerator = useRef(null);
-  const [xRatio, setXratio] = useState(init.xRatio);
-  const [yRatio, setYratio] = useState(init.yRatio);
-  const [xRatioPrev, setXratioPrev] = useState(init.xRatio);
-  const [yRatioPrev, setYratioPrev] = useState(init.yRatio);
-  const [volume, setVolume] = useState(init.volume)
+const instrument = useInstrumentsStore(state => state.instruments.find(instr => instr.id === id))
+   const setInstrument =  useInstrumentsStore((state) => state.setInstrument)
+  const updateInstrument = (changes) => {
+    setInstrument(id, changes)
+  }
+  const [xRatioPrev, setXratioPrev] = useState(defaultParametrs.xRatio);
+  const [yRatioPrev, setYratioPrev] = useState(defaultParametrs.yRatio);
+  const [isPlaying, setIsPlaying] = useState(false)
 
-  const [filterState, setFilterState] = useState({
-    frequency: init.filterFreq,
-    Q: init.filterQ,
-  });
-  const [delayState, setDelayState] = useState({
-    time: init.delayTime,
-    feedback: init.delayFeedback,
-  });
-
-  const [lfoState, setlfoState] = useState({
-    amp: init.lfoAmp,
-    freq: init.lfoFreq,
-  });
 
   useEffect(() => {
     noiseGenerator.current = new NoiseGenerator(defaultParametrs);
@@ -38,47 +29,38 @@ export default function useNoiseGenerator(init = defaultParametrs) {
   }, []);
 
   useEffect(() => {
-    noiseGenerator.current.setGainVolume(volume)
-  },[volume])
+    noiseGenerator.current.setGainVolume(instrument?.volume)
+  },[instrument?.volume])
 
   useEffect(() => {
-    noiseGenerator.current?.updateNoise(xRatio, yRatio);
+    noiseGenerator.current?.updateNoise(instrument?.xRatio, instrument?.yRatio);
     
-  }, [xRatio, yRatio]);
+  }, [instrument?.xRatio, instrument?.yRatio]);
   
   useEffect(() => {
-    noiseGenerator.current?.setFilter(filterState.frequency, filterState.Q)
-  }, [filterState])
+    noiseGenerator.current?.setFilter(instrument?.filterFreq, instrument?.filterQ)
+  }, [instrument?.filterFreq, instrument?.filterQ])
 
   useEffect(() => {
-    noiseGenerator.current?.setDelay(delayState.feedback, delayState.time)
-  }, [delayState])
+    noiseGenerator.current?.setDelay(instrument?.delayFeedback, instrument?.delayTime)
+  }, [instrument?.delayTime, instrument?.delayFeedback])
 
   useEffect(() => {
-    noiseGenerator.current?.setLFO(lfoState.freq, lfoState.amp)
-  }, [lfoState])
+    noiseGenerator.current?.setLFO(instrument?.lfoFreq, instrument?.lfoAmp)
+  }, [instrument?.lfoAmp, instrument?.lfoFreq])
 
-  const start = () => noiseGenerator.current?.startSound();
-  const stop = () =>  noiseGenerator.current?.stopSound();
+  const start = () => {noiseGenerator.current?.startSound(); setIsPlaying(true)}
+  const stop = () =>  {noiseGenerator.current?.stopSound(); setIsPlaying(false)}
 
   return {
-    volume,
-    setVolume,
-    xRatio,
-    yRatio,
-    setXratio,
-    setYratio,
+    instrument,
+    updateInstrument,
     yRatioPrev,
     setYratioPrev,
     xRatioPrev,
     setXratioPrev,
-    setDelayState,
-    delayState,
-    setFilterState,
-    filterState,
-    setlfoState,
-    lfoState,
     start,
-    stop
+    stop,
+    isPlaying
   };
 }

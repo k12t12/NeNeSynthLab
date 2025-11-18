@@ -5,7 +5,7 @@
     top: 0vh;
     right: -1vh;
     width: 30vh;
-    height: 90vh;
+    height: 60vh;
     
     border-style:solid;
     border-width: 0.1vh;
@@ -43,6 +43,11 @@
      font-size: 1.5vh;
      border-width: 0.1vh;
 }
+
+.openCloseButton:hover{
+  font-size: 1.5vh;
+}
+
 .hidenMenu {
     margin-right: -31vh;
     transition: margin-right 0.4s;
@@ -108,10 +113,31 @@ input[type="range"].slider::-webkit-slider-thumb {
   margin-top: 0.01vh
 }
 
+.loadButton {
+  padding: 0;
+  opacity: 0;
+  height: 1vh;
+  width: 1vh;
+  font-size: 1vh;
+} 
+
 .menuButton {
     border-width: 0.1vh;
     padding: 0vh;
     font-size: 1.5vh;
+}
+
+.menuButton:hover{
+  transition: font-size 0.1s;
+  font-size: 1.2vh;
+}
+
+.loadBlock {
+  margin-bottom: 0vh;
+  border-width: 0.3vh;
+    height: 2vh;
+    padding: 0.2vh;
+
 }
 
 .canvas {

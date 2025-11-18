@@ -1,49 +1,19 @@
 import { useEffect, useState, useRef } from "react";
 import { drumMachineDefaultParametrs as defaultParametrs } from "../../../utils/defaultParametrs";
 import DrumMachine from "../../../services/drumMachine";
+import useInstrumentsStore from "../../../store/instrumentsStore";
 
-
-export default function useDrumMachine(init = defaultParametrs) {
+export default function useDrumMachine(id) {
   const drumMachine = useRef(null);
+  const instrument = useInstrumentsStore(state => state.instruments.find(instr => instr.id === id))
+  const setInstrument =  useInstrumentsStore((state) => state.setInstrument)
+  const updateInstrument = (changes) => {
+    setInstrument(id, changes)
+  }
 
-  const [kickSequence, setKickSequence] = useState([
-    ...init.kickSeq.sequences[0],
-  ]);
-
-  const [snareSequence, setSnareSequence] = useState([
-    ...init.snareSeq.sequences[0],
-  ]);
-
-   const [openHatSequence, setOpenHatSequence] = useState([
-    ...init.openHatSeq.sequences[0],
-  ]);
-
-  const [closeHatSequence, setCloseHatSequence] = useState([
-    ...init.closeHatSeq.sequences[0],
-  ]);
-
-  const [kickState, setKickState] = useState({
-    volume: init.kick.volume,
-    tone: init.kick.tone
-  })
-
-  const [snareState, setSnareState] = useState({
-    volume: init.snare.volume,
-    tone: init.snare.tone
-  })
-
-  const [openHatState, setOpenHatState] = useState({
-    volume: init.openHat.volume,
-    tone: init.openHat.tone
-  })
-
-   const [closeHatState, setCloseHatState] = useState({
-    volume: init.closeHat.volume,
-    tone: init.closeHat.tone
-  })
-
+  
   const [currentStep, setCurrentStep] = useState(0);
-  const [volume, setVolume] = useState(init.volume)
+  const [isPlaying, setIsPlaying] = useState(false)
  
 
   useEffect(() => {
@@ -51,7 +21,7 @@ export default function useDrumMachine(init = defaultParametrs) {
       setCurrentStep(stepIndex);
     };
 
-    drumMachine.current = new DrumMachine(init, onStepUpdate);
+    drumMachine.current = new DrumMachine(defaultParametrs, onStepUpdate);
     return () => {
       if (drumMachine.current) {
         drumMachine.current.stopSound();
@@ -60,82 +30,68 @@ export default function useDrumMachine(init = defaultParametrs) {
   }, []);
 
   useEffect(() => {
-    drumMachine.current.setGainVolume(volume)
-  },[volume])
+    drumMachine.current.setGainVolume(instrument?.volume)
+  },[instrument?.volume])
 
   useEffect(() => {
-    drumMachine.current.kick.setVolume(kickState.volume)
-    drumMachine.current.kick.setTone(kickState.tone)
-  }, [kickState])
+    drumMachine.current.kick.setVolume(instrument?.kick.volume)
+    drumMachine.current.kick.setTone(instrument?.kick.tone)
+  }, [instrument?.kick])
 
   useEffect(() => {
-    drumMachine.current.snare.setVolume(snareState.volume)
-    drumMachine.current.snare.setTone(snareState.tone)
-  }, [snareState])
+    drumMachine.current.snare.setVolume(instrument?.snare.volume)
+    drumMachine.current.snare.setTone(instrument?.snare.tone)
+  }, [instrument?.snare])
 
   useEffect(() => {
-    drumMachine.current.openHat.setVolume(openHatState.volume)
-    drumMachine.current.openHat.setTone(openHatState.tone)
-  }, [openHatState])
+    drumMachine.current.openHat.setVolume(instrument?.openHat.volume)
+    drumMachine.current.openHat.setTone(instrument?.openHat.tone)
+  }, [instrument?.openHat])
 
   useEffect(() => {
-    drumMachine.current.closeHat.setVolume(closeHatState.volume)
-    drumMachine.current.closeHat.setTone(closeHatState.tone)
-  }, [closeHatState])
+    drumMachine.current.closeHat.setVolume(instrument?.closeHat.volume)
+    drumMachine.current.closeHat.setTone(instrument?.closeHat.tone)
+  }, [instrument?.closeHat])
 
   useEffect(() => {
       drumMachine.current.kickSequencer.setSequence(
       0,
-      kickSequence
+      instrument?.kickSeq.sequences[0]
     );
-  }, [kickSequence]);
+  }, [instrument?.kickSeq]);
 
   useEffect(() => {
       drumMachine.current.snareSequencer.setSequence(
       0,
-      snareSequence
+      instrument?.snareSeq.sequences[0]
     );
-  }, [snareSequence]);
+  }, [instrument?.snareSeq]);
 
   useEffect(() => {
       drumMachine.current.openHatSequencer.setSequence(
       0,
-      openHatSequence
+      instrument?.openHatSeq.sequences[0]
     );
-  }, [openHatSequence]);
+  }, [instrument?.openHatSeq]);
 
   useEffect(() => {
       drumMachine.current.closeHatSequencer.setSequence(
       0,
-      closeHatSequence
+      instrument?.closeHatSeq.sequences[0]
     );
-  }, [closeHatSequence]);
+  }, [instrument?.closeHatSeq]);
 
 
-  const start = () => drumMachine.current?.startSound();
-  const stop = () => drumMachine.current?.stopSound();
+  const start = () => {drumMachine.current?.startSound(); setIsPlaying(true)};
+  const stop = () => {drumMachine.current?.stopSound(); setIsPlaying(false)};
 
   return {
     start,
     stop,
-    kickSequence,
-    setKickSequence,
-    snareSequence,
-    setSnareSequence,
-    openHatSequence,
-    setOpenHatSequence,
-    closeHatSequence,
-    setCloseHatSequence,
+    instrument,
+    updateInstrument,
     currentStep,
-    kickState,
-    setKickState,
-    snareState,
-    setSnareState,
-    openHatState,
-    setOpenHatState,
-    closeHatState,
-    setCloseHatState,
-    volume,
-    setVolume
+    setCurrentStep,
+    isPlaying
   };
 }

@@ -1,9 +1,5 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import {getTransport, getContext, Player, Time} from 'tone'
-import DrumMachine from './services/drumMachine.js'
-import { drumMachineDefaultParametrs } from './utils/defaultParametrs.js'
-import KickSynth from './services/kickSynth.js'
+import {getTransport} from 'tone'
 import App from './App.jsx'
 
 

@@ -33,8 +33,10 @@ export default class DrumMachine{
     } 
 
     setGainVolume(newVolume) {
-        this.gain.gain.rampTo(newVolume, 0.005)
-
+        newVolume = newVolume / 1
+        if (typeof(newVolume)=="number") {
+            this.gain.gain.rampTo(newVolume, 0.005)
+      }
     }
 
     startSound() {

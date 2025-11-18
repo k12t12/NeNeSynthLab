@@ -21,6 +21,7 @@ constructor(init, onStepUpdate){
     this.sequencer = new Sequencer(init.seq, onStepUpdate,
        (time, note)=> {this.ampEnv.triggerAttackRelease("1n", time);
          this.oscillator.set({frequency: note})
+   
         })
     
   
@@ -28,11 +29,16 @@ constructor(init, onStepUpdate){
 }
 
 setGainVolume(newVolume) {
-        this.gain.gain.rampTo(newVolume, 0.005)
+       newVolume = newVolume / 1
+       if (typeof(newVolume)=="number") {
+            this.gain.gain.rampTo(newVolume, 0.005)
+      }
 
     }
     
 setDelay(newFeedback, newTime){
+    newFeedback = newFeedback / 1
+    newTime = newTime / 1
     this.delay.feedback.rampTo(newFeedback, 0.005)
     this.delay.delayTime.rampTo(newTime,0.05)
   // we switch the wet value to 0 when the feedback is 0, thus disabling the delay 
@@ -45,11 +51,15 @@ setDelay(newFeedback, newTime){
 }
 
 setFilter(newFreq, newQ) {
+  newFreq = newFreq / 1
+  newQ = newQ / 1
   this.filter.set({frequency: newFreq, Q: newQ})
 }
 
 setEnvelope(newAttack, newRelease){
-this.ampEnv.set({attack: newAttack, decay: newRelease})
+  newAttack = newAttack / 1
+  newRelease = newRelease / 1
+  this.ampEnv.set({attack: newAttack, decay: newRelease})
 }
 
 dispose(){

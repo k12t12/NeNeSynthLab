@@ -1,9 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&display=swap');
 
+html {
+
+  overscroll-behavior: none; 
+}
+html, body {
+    overflow: hidden !important;
+    position: fixed !important;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
 body {
-  contain: paint;
-  width: 100vw;
-  height: 98vh;
+ 
   margin: 0vh;
   font-family: "Google Sans Code", monospace;
   font-optical-sizing: auto;
@@ -45,6 +55,19 @@ input[type="number"] {
   font-family: "Google Sans Code", monospace;
 }
 
+button:active{
+  
+  color: rgb(255, 255, 255);
+}
+
+button:focus{
+  background-color: white;
+}
+
+button:hover{
+  transition: font-size 0.1s;
+  font-size: 10px;
+}
 
 button {
   width: auto;

@@ -9,6 +9,8 @@ const useInstrumentsStore = create((set) => ({
       instrument.id === id ? { ...instrument, ...updates } : instrument
     )
   })),
+  loadInstruments: (newIns) => set(()=> ({instruments: newIns}))
+    
 
 
 

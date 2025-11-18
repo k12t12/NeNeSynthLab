@@ -1,7 +1,3 @@
- import DroneSynth from "./instruments/droneSynth/droneSynth"
-import SeqSynth from "./instruments/seqSynth/seqSynth"
-import NoiseGenerator from "./instruments/noiseSynth/noiseGenerator"
-import DrumMachine from "./instruments/drumMachine/drumMachine"
 import { getTransport } from "tone"
 import { useEffect, useState, useRef } from "react"
 import masterChain from "../services/masterChain"
@@ -10,6 +6,8 @@ import { seqSynthDefaultParametrs } from "../utils/defaultParametrs"
 import { droneSynthDefaultParametrs } from "../utils/defaultParametrs"
 import { drumMachineDefaultParametrs } from "../utils/defaultParametrs"
 import { noiseGeneratorDefaultParametrs } from "../utils/defaultParametrs"
+import useInstrumentsStore from "../store/instrumentsStore"
+import generateId from "../utils/generateId"
 
 import styles from "../assets/menu.module.css"
 
@@ -17,36 +15,57 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
     const [isMenuHiden, setIsMenuHiden] = useState(false)
     const [BPM, setBPM] = useState(getTransport().bpm.value)
     const [reverbState, setReverbState] = useState({decay: init.reverbDecay, wet: init.reverbWet})
-    const [index, setIndex] = useState(0)
-
+    const instruments = useInstrumentsStore((state) => state.instruments)
+    const loadInstruments = useInstrumentsStore((state) => state.loadInstruments) 
+                                                                                                            
+    const loadEl = useRef()
     const progressCanvas = useRef(null)
     const master = useRef(null)
 
+    const handlerLoadButton = (e) => {
+    const file = e.target.files[0]
+    const reader = new FileReader();
+    reader.readAsText(file)
+    reader.onload = function() {
+      const loadedIns = JSON.parse(reader.result)
+      loadedIns.map((ins, ind)=> { return ins.id = Number(String(generateId()) + ind) })
+      loadInstruments(loadedIns)
+  
+  };
+}
+
+  const handlerSaveButton = () => {
+    const projectData = JSON.stringify(instruments)
+    const blob = new Blob([projectData], { type: 'application/json' });
+    loadEl.current.href = URL.createObjectURL(blob)
+    loadEl.current.download = 'project.NeNe'
+    loadEl.current.click()
+  }
+
     const handlerAddButton = (type) => {
-        let component, parametrs
+        let componentName, parametrs
 
         switch(type) {
             case("drumMachine"):
-                component = DrumMachine
+                componentName = "DrumMachine"
                 parametrs = drumMachineDefaultParametrs
                 break;
             case("seqSynth"):
-                component = SeqSynth
+                componentName = "SeqSynth"
                 parametrs = seqSynthDefaultParametrs
                 break;
             case("noiseGenerator"):
-                component = NoiseGenerator
+                componentName = "NoiseGenerator"
                 parametrs = noiseGeneratorDefaultParametrs
                 break;
             case("droneSynth"):
-                component = SeqSynth
+                componentName = "DroneSynth"
                 parametrs = droneSynthDefaultParametrs
                 break;
         }
-        setIndex(index+1);
         addInstrumentCallback({
-            comp: component,
-            id: index,
+            comp: componentName,
+            id: generateId(),
             x: 99,
             y: 99,
             ...parametrs
@@ -71,7 +90,11 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
     },[])
     
     useEffect(()=>{
-        console.log(reverbState.wet)
+    loadEl.current = document.createElement('a')
+  }, [])
+
+    useEffect(()=>{
+        
         master.current.setReverb(reverbState.wet, reverbState.decay)
     }, [reverbState])
 
@@ -94,8 +117,15 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
         
         
             
-            <button onClick={handlerShowHideMenu} className={styles.openCloseButton}> {isMenuHiden ? "open": "hide"} </button>
-            ADD INSTRUMENT
+            <button  onClick={handlerShowHideMenu} className={styles.openCloseButton}> {isMenuHiden ? "open": "hide"} </button>
+
+            <div className={styles.loadBlock}> 
+            <label htmlFor="project_load"> load </label>
+            <input className={styles.loadButton} id="project_load" type="file" onChange={handlerLoadButton} /> 
+            </div>
+            <button className={styles.menuButton} onClick={handlerSaveButton}> save </button>
+
+            <div> ADD INSTRUMENT </div>
             <div className={styles.addBlock}>
                 <button className={styles.menuButton} onClick={()=>{handlerAddButton("droneSynth")}}> drone synth </button>
                 <button className={styles.menuButton} onClick={()=>{handlerAddButton("seqSynth")}}>  sequencer synth </button>

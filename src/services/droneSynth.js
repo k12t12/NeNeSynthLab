@@ -3,7 +3,6 @@ import masterChain from "./masterChain"
 
 export default class DroneSynth {
     constructor(init) { 
-      console.log(init.volume)
         this.gain = new Gain(init.volume)
         masterChain.connectToMaster(this.gain)
 
@@ -17,15 +16,26 @@ export default class DroneSynth {
         secondOsc: new Oscillator(init.secondOsc.freq, "square10").connect(this.filter),
         thirdOsc: new Oscillator(init.thirdOsc.freq, "square10").connect(this.filter)
       }
+      for (let osc in this.oscs) {
+        this.oscs[osc].volume.value = -36
+     
+      }
+
         this.stopSound()
 
     }
 
     setGainVolume(newVolume){
-      this.gain.gain.rampTo(newVolume, 0.005)
+      newVolume = newVolume / 1
+      if (typeof(newVolume)=="number") {
+            this.gain.gain.rampTo(newVolume, 0.005)
+      }
     }
 
     setDelay(parametrs){
+      parametrs.time = parametrs.time / 1
+      parametrs.feedback = parametrs.feedback / 1
+
       if (parametrs.time) {
         this.delay.delayTime.rampTo(parametrs.time, 0.5)
       }
@@ -50,6 +60,8 @@ export default class DroneSynth {
       if (parametrs.Q){ this.filter.set({Q: parametrs.Q})}
     }
     setVibrato(parametrs){
+      parametrs.depth = parametrs.depth / 1
+      
       if (parametrs.freq){ this.vibrato.set({frequency: parametrs.freq})}
       if (parametrs.depth){this.vibrato.depth.rampTo(parametrs.depth, 0.005)}
     }

@@ -15,8 +15,9 @@
 }
 
 .volumeControlLayer {
-    margin-top: -5px;
+    margin-top: -0px;
     padding-left: 2%;
+    height: 32px;
     color: white;
     display: flex;
     background-color: black;
@@ -24,7 +25,14 @@
     
 }
 .handle {
+    touch-action:none;
     background-color: black;
     color:white;
     text-align: center;
+}
+
+.indicator {
+    font-size: 22px;
+
+
 }

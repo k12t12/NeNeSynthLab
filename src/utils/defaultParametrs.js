@@ -33,7 +33,7 @@ const droneSynthDefaultParametrs = {
   delayTime: 0.1,
   delayFeedback: 0.1,
 };
-console.log(droneSynthDefaultParametrs.volume)
+
 const noiseGeneratorDefaultParametrs = {
   volume: 1,
   xRatio: 0.03,

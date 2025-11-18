@@ -9,84 +9,98 @@ import styles from "../../../assets/drumMachine.module.css"
 export default function DrumMachineComponent({id, endPosStyle, onClose}) {
     
     const {
-        start,
-        stop,
-        kickSequence,
-        setKickSequence,
-        snareSequence,
-        setSnareSequence,
-        openHatSequence,
-        setOpenHatSequence,
-        setCloseHatSequence,
-        closeHatSequence,
-        currentStep,
-        kickState,
-        setKickState,
-        snareState,
-        setSnareState,
-        closeHatState,
-        setCloseHatState,
-        openHatState,
-        setOpenHatState,
-        volume,
-        setVolume
+    start,
+    stop,
+    instrument,
+    updateInstrument,
+    currentStep,
+    setCurrentStep,
+    isPlaying
+  } = useDrumMachine(id)
 
-    } = useDrumMachine()
     const handlerButtonClear = () => {
-        setCloseHatSequence([null,null,null,null,null,null,null,null, null,null,null,null,null,null,null,null]);
-     setOpenHatSequence([null,null,null,null,null,null,null,null, null,null,null,null,null,null,null,null]),
-      setSnareSequence([null,null,null,null,null,null,null,null, null,null,null,null,null,null,null,null]),
-       setKickSequence([null,null,null,null,null,null,null,null, null,null,null,null,null,null,null,null])
+      const newSequence = [null,null,null,null,null,null,null,null, null,null,null,null,null,null,null,null]
+        updateInstrument({closeHatSeq: {...instrument?.closeHatSeq,
+           sequences: instrument?.closeHatSeq.sequences.map((x,ind)=>(ind == instrument?.closeHatSeq.currentSequenceIndex ? newSequence : x))}});
+
+     updateInstrument({openHatSeq: {...instrument?.openHatSeq,
+       sequences: instrument?.openHatSeq.sequences.map((x,ind)=>(ind == instrument?.openHatSeq.currentSequenceIndex ? newSequence : x))}});
+      updateInstrument({kickSeq: {...instrument?.kickSeq,
+         sequences: instrument?.kickSeq.sequences.map((x,ind)=>(ind == instrument?.kickSeq.currentSequenceIndex ? newSequence : x))}});
+       updateInstrument({snareSeq: {...instrument?.snareSeq,
+         sequences:instrument?.snareSeq.sequences.map((x,ind)=>(ind == instrument?.snareSeq.currentSequenceIndex ? newSequence : x))}});
     }
 
     const handlerCheckKickSequence = (isOn, curIndex) => {
         const newValue = isOn ? "start" : null
-        setKickSequence(prev => prev.map((x,index)=> index==curIndex ? newValue: x))
+        const currentSequence = instrument?.kickSeq.sequences[instrument?.kickSeq.currentSequenceIndex]
+      const newSequence = currentSequence.map((x,index)=> index==curIndex ? newValue: x)
+    
+     updateInstrument({kickSeq: {...instrument?.kickSeq,
+       sequences: instrument?.kickSeq.sequences.map((x,ind)=>(ind == instrument?.kickSeq.currentSequenceIndex ? newSequence : x))
+      }})
      }
 
      const handlerCheckSnareSequence = (isOn, curIndex) => {
-        const newValue = isOn ? "start" : null
-        setSnareSequence(prev => prev.map((x,index)=> index==curIndex ? newValue: x))
+         const newValue = isOn ? "start" : null
+        const currentSequence = instrument?.snareSeq.sequences[instrument?.snareSeq.currentSequenceIndex]
+      const newSequence = currentSequence.map((x,index)=> index==curIndex ? newValue: x)
+    
+     updateInstrument({snareSeq: {...instrument?.snareSeq,
+       sequences: instrument?.snareSeq.sequences.map((x,ind)=>(ind == instrument?.snareSeq.currentSequenceIndex ? newSequence : x))
+      }})
      }
 
       const handlerCheckOpenHatSequence = (isOn, curIndex) => {
         const newValue = isOn ? "start" : null
-        setOpenHatSequence(prev => prev.map((x,index)=> index==curIndex ? newValue: x))
+        const currentSequence = instrument?.openHatSeq.sequences[instrument?.openHatSeq.currentSequenceIndex]
+      const newSequence = currentSequence.map((x,index)=> index==curIndex ? newValue: x)
+    
+     updateInstrument({openHatSeq: {...instrument?.openHatSeq,
+       sequences: instrument?.openHatSeq.sequences.map((x,ind)=>(ind == instrument?.openHatSeq.currentSequenceIndex ? newSequence : x))
+      }})
       }
 
       const handlerCheckCloseHatSequence = (isOn, curIndex) => {
         const newValue = isOn ? "start" : null
-        setCloseHatSequence(prev => prev.map((x,index)=> index==curIndex ? newValue: x))
+        const currentSequence = instrument?.closeHatSeq.sequences[instrument?.closeHatSeq.currentSequenceIndex]
+      const newSequence = currentSequence.map((x,index)=> index==curIndex ? newValue: x)
+    
+     updateInstrument({closeHatSeq: {...instrument?.closeHatSeq,
+       sequences: instrument?.closeHatSeq.sequences.map((x,ind)=>(ind == instrument?.closeHatSeq.currentSequenceIndex ? newSequence : x))
+      }})
       }
 
       const handlerKnobKickVolume = (e) => {
-        setKickState({volume: e, tone: kickState.tone})
+        
+        updateInstrument({kick: { ...instrument?.kick, volume: e}})
+      
       }
 
       const handlerKnobKickTone = (e) => {
-        setKickState({volume: kickState.volume, tone: e})
+        updateInstrument({kick: { ...instrument?.kick, tone: e}})
       }
 
       const handlerKnobSnareTone = (e) => {
-        setSnareState({volume: snareState.volume, tone: e})
+        updateInstrument({snare: { ...instrument?.snare, tone: e}})
       }
       const handlerKnobSnareVolume = (e) => {
-        setSnareState({volume: e, tone: snareState.tone})
+        updateInstrument({snare: { ...instrument?.snare, volume: e}})
       }
 
       const handlerKnobOpenHatTone = (e) => {
-        setOpenHatState({volume: openHatState.volume, tone: e})
+        updateInstrument({openHat: { ...instrument?.openHat, tone: e,}})
       }
       const handlerKnobOpenHatVolume = (e) => {
-        setOpenHatState({volume: e, tone: openHatState.tone})
+        updateInstrument({openHat: { ...instrument?.openHat, volume: e}})
       }
 
       const handlerKnobCloseHatTone = (e) => {
-        setCloseHatState({volume: closeHatState.volume, tone: e})
+      updateInstrument({closeHat: { ...instrument?.closeHat, tone: e}})
       }
 
       const handlerKnobCloseHatVolume = (e) => {
-        setCloseHatState({volume: e, tone: closeHatState.tone})
+       updateInstrument({closeHat: { ...instrument?.closeHat, volume: e}})
       }
 
       const {attributes, listeners, setNodeRef, transform} = useDraggable({
@@ -99,7 +113,7 @@ export default function DrumMachineComponent({id, endPosStyle, onClose}) {
 
     return (
       <div style = {{...transformStyle, ...endPosStyle, position: "absolute"}}>
-        <Bar volume = {volume} onVolumeChange={(e)=>{setVolume(e.target.value)}} onStop={stop} onStart={start} onClose={onClose}> <div ref={setNodeRef} {...listeners} {...attributes}> drum machine </div> </Bar>
+        <Bar isPlaying = {isPlaying} volume = {instrument?.volume} onVolumeChange={(e)=>{updateInstrument({volume: e.target.value})}} onStop={stop} onStart={start} onClose={onClose}> <div ref={setNodeRef} {...listeners} {...attributes}> drum machine </div> </Bar>
         <div className={styles.drumMachine}>
                
             <div className={styles.knobs}>
@@ -110,11 +124,11 @@ export default function DrumMachineComponent({id, endPosStyle, onClose}) {
 
               <div>
                 <label> volume </label>
-            <Knob onChange={handlerKnobKickVolume} max="1" min="0" step = "0.1" initValue={kickState.volume}> </Knob>  {kickState.volume * 100 + "%"} 
+            <Knob onChange={handlerKnobKickVolume} max="1" min="0" step = "0.1" initValue={instrument?.kick.volume}> </Knob>  {instrument?.kick.volume * 100 + "%"} 
             </div>
               <div>
                 <label> tone </label>
-            <Knob onChange={handlerKnobKickTone} max="20" min="-20" step = "1" initValue={kickState.tone}> </Knob> {kickState.tone}
+            <Knob onChange={handlerKnobKickTone} max="20" min="-20" step = "1" initValue={instrument?.kick.tone}> </Knob> {instrument?.kick.tone}
               </div>
               </div>
               </div>
@@ -124,11 +138,11 @@ export default function DrumMachineComponent({id, endPosStyle, onClose}) {
 
               <div>
                 <label> volume </label>
-            <Knob onChange={handlerKnobSnareVolume} max="1" min="0" step = "0.1" initValue={snareState.volume}> </Knob>  {snareState.volume * 100 + "%"} 
+            <Knob onChange={handlerKnobSnareVolume} max="1" min="0" step = "0.1" initValue={instrument?.snare.volume}> </Knob>  {instrument?.snare.volume * 100 + "%"} 
             </div>
               <div>
                 <label> tone </label>
-            <Knob onChange={handlerKnobSnareTone} max="20" min="-20" step = "1" initValue={snareState.tone}> </Knob> {snareState.tone}
+            <Knob onChange={handlerKnobSnareTone} max="20" min="-20" step = "1" initValue={instrument?.snare.tone}> </Knob> {instrument?.snare.tone}
               </div>
               </div>
               </div>
@@ -138,11 +152,11 @@ export default function DrumMachineComponent({id, endPosStyle, onClose}) {
 
               <div>
                 <label> volume </label>
-            <Knob onChange={handlerKnobCloseHatVolume} max="1" min="0" step = "0.1" initValue={closeHatState.volume}> </Knob>  {closeHatState.volume * 100 + "%"} 
+            <Knob onChange={handlerKnobCloseHatVolume} max="1" min="0" step = "0.1" initValue={instrument?.closeHat.volume}> </Knob>  {instrument?.closeHat.volume * 100 + "%"} 
             </div>
               <div>
                 <label> tone </label>
-            <Knob onChange={handlerKnobCloseHatTone} max="20" min="-20" step = "1" initValue={closeHatState.tone}> </Knob> {closeHatState.tone}
+            <Knob onChange={handlerKnobCloseHatTone} max="20" min="-20" step = "1" initValue={instrument?.closeHat.tone}> </Knob> {instrument?.closeHat.tone}
               </div>
               </div>
               </div>
@@ -152,11 +166,11 @@ export default function DrumMachineComponent({id, endPosStyle, onClose}) {
 
               <div>
                 <label> volume </label>
-            <Knob onChange={handlerKnobOpenHatVolume} max="1" min="0" step = "0.1" initValue={openHatState.volume}> </Knob>  {openHatState.volume * 100 + "%"} 
+            <Knob onChange={handlerKnobOpenHatVolume} max="1" min="0" step = "0.1" initValue={instrument?.openHat.volume}> </Knob>  {instrument?.openHat.volume * 100 + "%"} 
             </div>
               <div>
                 <label> tone </label>
-            <Knob onChange={handlerKnobOpenHatTone} max="20" min="-20" step = "1" initValue={openHatState.tone}> </Knob> {openHatState.tone}
+            <Knob onChange={handlerKnobOpenHatTone} max="20" min="-20" step = "1" initValue={instrument?.openHat.tone}> </Knob> {instrument?.openHat.tone}
               </div>
               </div>
               </div>
@@ -166,10 +180,10 @@ export default function DrumMachineComponent({id, endPosStyle, onClose}) {
             <div className={styles.patternEditor}>
             
             <div>
-            <PatternLine currentStep = {currentStep} name = "open hat" sequence = {openHatSequence} handler = {handlerCheckOpenHatSequence}></PatternLine>
-            <PatternLine currentStep = {currentStep} name = "close hat" sequence = {closeHatSequence} handler = {handlerCheckCloseHatSequence}></PatternLine>
-            <PatternLine currentStep = {currentStep} name = "snare" sequence = {snareSequence} handler = {handlerCheckSnareSequence}></PatternLine>
-            <PatternLine currentStep = {currentStep} name = "kick" sequence = {kickSequence} handler = {handlerCheckKickSequence}></PatternLine>
+            <PatternLine currentStep = {currentStep} name = "open hat" sequence = {instrument?.openHatSeq.sequences[0]} handler = {handlerCheckOpenHatSequence}></PatternLine>
+            <PatternLine currentStep = {currentStep} name = "close hat" sequence = {instrument?.closeHatSeq.sequences[0]} handler = {handlerCheckCloseHatSequence}></PatternLine>
+            <PatternLine currentStep = {currentStep} name = "snare" sequence = {instrument?.snareSeq.sequences[0]} handler = {handlerCheckSnareSequence}></PatternLine>
+            <PatternLine currentStep = {currentStep} name = "kick" sequence = {instrument?.kickSeq.sequences[0]} handler = {handlerCheckKickSequence}></PatternLine>
             </div>
 
             <div>

@@ -33,11 +33,16 @@ export default class NoiseGenerator {
   }
 
   setGainVolume(newVolume) {
-    console.log(newVolume)
-        this.gain.gain.rampTo(newVolume, 0.005)
+      newVolume = newVolume / 1
+        if (typeof(newVolume)=="number") {
+            this.gain.gain.rampTo(newVolume, 0.005)
+      }
     }
 
   setDelay(newFeedback, newTime) {
+    newFeedback = newFeedback / 1
+    newTime = newTime / 1
+    
     this.delay.feedback.rampTo(newFeedback, 0.005)
     this.delay.delayTime.rampTo(newTime,0.05)
 
@@ -83,7 +88,6 @@ export default class NoiseGenerator {
 
     //when calculations are completed:
     worker.onmessage = (e) => {
-      console.log(this.buffer)
       perlinNoiseData = e.data
       this.channel = this.buffer.getChannelData(0); // link to audio buffer channel
     

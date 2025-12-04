@@ -2,8 +2,8 @@ import getNoteFromInterval from "./getNoteFromInterval";
 import { gainToDb } from "tone";
 
 const masterDefaultParametrs = {
-  reverbWet: 0.3,
-  reverbDecay: 1,
+  reverbWet: 1,
+  reverbDecay: 0.2,
   bpm: 100
 }
 

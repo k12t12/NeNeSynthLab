@@ -1,6 +1,9 @@
 import { Player, FeedbackDelay, Filter, LFO, Gain, getContext, now } from "tone";
 import findZeroCrossing from "../utils/findZeroCrossing";
 import masterChain from "./masterChain";
+import Worker from "../utils/generatePerlinNoiseBuffer?worker"
+
+
 
 const FILTER_FREQ_MAX = 8000;
 
@@ -82,7 +85,7 @@ export default class NoiseGenerator {
     
     let perlinNoiseData = null
     //we need worker to calculate large audio data
-    const worker = new Worker('/src/utils/generatePerlinNoiseBuffer.js', {type: 'module'})
+    const worker = new Worker()
 
     worker.postMessage({length: this.buffer.length, xRatio: xRatio, yRatio: yRatio})
 

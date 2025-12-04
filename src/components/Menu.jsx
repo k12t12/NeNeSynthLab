@@ -137,13 +137,14 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
             <input className = {styles.slider} type="range" id="BPM"  min="10" max="300" onChange={(e)=>{setBPM(e.target.value)}} value={BPM} /> {BPM}
             </div>
             <canvas className = {styles.canvas} ref = {progressCanvas} id="tactProgress" width="180" height="50"></canvas>
+
         MASTER
         <div className={styles.masterBlock}>
             <div> reverb wet </div>
             
             <input className = {styles.slider} type="range" id="wet"  min="0" max="1" step="0.01" onChange={handlerSliderReverbWet} value={reverbState.wet} /> 
-            <div> reverb decay </div>
-            <input className = {styles.slider} type="range" id="decay"  min="0.1" max="4" step="0.1" onChange={handlerSliderReverbDecay} value={reverbState.decay} />
+            <div> reverb room size </div>
+            <input className = {styles.slider} type="range" id="decay"  min="0.1" max="1" step="0.1" onChange={handlerSliderReverbDecay} value={reverbState.decay} />
             </div>
         </div>
     )

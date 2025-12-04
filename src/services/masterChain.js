@@ -1,23 +1,24 @@
-import { Compressor, Gain, Reverb } from "tone"
+import { Compressor, Gain, JCReverb, FeedbackDelay} from "tone"
 
 class MasterChain {
     constructor(){
         
         this.compressor = new Compressor(-20).toDestination()
-        this.reverb = new Reverb().connect(this.compressor)
-        this.gain = new Gain(1).connect(this.reverb).connect(this.compressor)
+        this.reverb = new JCReverb().connect(this.compressor)
+        this.delay = new FeedbackDelay(0.8,0.01).connect(this.reverb)
+        this.gain = new Gain(1).connect(this.delay).connect(this.compressor)
     }
 
-    setReverb(newWet, newDecay){
+    setReverb(newWet, newSize){
         newWet = newWet / 1
-        newDecay = newDecay / 1
+        newSize = newSize / 1
         
-        if (newDecay >= 0.1){
+        if (newSize >= 0.1){
           
-            this.reverb.decay = newDecay
+            this.reverb.roomSize.value = newSize
         }
         if (newWet <=1) {
-         
+            this.delay.wet.value = newWet
             this.reverb.wet.value = newWet
         }
     }
@@ -30,6 +31,5 @@ class MasterChain {
 
 
 const masterChain = new MasterChain()
-masterChain.setReverb(0.5, 100)
 
 export default masterChain

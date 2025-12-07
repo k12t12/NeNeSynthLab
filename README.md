@@ -13,7 +13,8 @@ Like the drone synth, this is also based on classic subtractive synthesis. It co
 A more specialized instrument for creating interesting sound effects. It generates noise using a Perlin algorithm. Initially, 2D noise is generated, from which a 1D signal (i.e., sound, logically) is extracted based on Xratio and Yratio coefficients. Visually, you can imagine it as cutting a strip of fixed size from a noise image, while being able to stretch that image. This can result in interesting textures. The noise itself passes through a filter, whose frequency is modulated by an LFO, and then through a delay.
 ### Drum machine
 An instrument for rhythmic parts. It consists of a set of basic drum samples (kick, hi-hat, open hat, snare), controlled by a matrix sequencer. Each column in it represents a 1/16th note of a measure. For each sample, you can change the volume and pitch.
-
+### Master Chain
+Currently consists solely of a reverb unit. (A compressor is also present in the chain but is not user-controllable). I decided to include it because drum sounds processed through this reverb algorithm can sound quite peculiar. I'm using the JCReverb algorithm as it is sufficiently optimized for browser performance since it does not require generating an impulse response.
 ## Usage for devs
 This part assumes you already have Node.js and npm installed.
 Before start:

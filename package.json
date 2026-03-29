@@ -1,7 +1,7 @@
 {
   "name": "nenesynthlab",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -15,6 +15,7 @@
     "react-dom": "^19.1.0",
     "react-use": "^17.6.0",
     "tone": "^15.1.22",
+    "webgl-obj-loader": "^2.0.8",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
@@ -22,7 +23,7 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.6.0",
-    "eslint": "^9.30.1",
+    "eslint": "^9.0.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",

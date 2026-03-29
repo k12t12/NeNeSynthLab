@@ -6,6 +6,7 @@ import { seqSynthDefaultParametrs } from "../utils/defaultParametrs"
 import { droneSynthDefaultParametrs } from "../utils/defaultParametrs"
 import { drumMachineDefaultParametrs } from "../utils/defaultParametrs"
 import { noiseGeneratorDefaultParametrs } from "../utils/defaultParametrs"
+import Cat from "./Cat"
 import useInstrumentsStore from "../store/instrumentsStore"
 import generateId from "../utils/generateId"
 
@@ -115,7 +116,7 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
     return (
         <div className={`${styles.menu} ${isMenuHiden ? styles.hidenMenu:null}`}>
         
-        
+            
             
             <button  onClick={handlerShowHideMenu} className={styles.openCloseButton}> {isMenuHiden ? "open": "hide"} </button>
 
@@ -146,6 +147,9 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
             <div> reverb room size </div>
             <input className = {styles.slider} type="range" id="decay"  min="0.1" max="1" step="0.1" onChange={handlerSliderReverbDecay} value={reverbState.decay} />
             </div>
+
+            <Cat> </Cat>
+            
         </div>
     )
 }

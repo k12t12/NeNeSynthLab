@@ -1,7 +1,6 @@
 import {useRef, useEffect} from "react"
 import createShader from "../utils/utilsGl/createShader"
 import createProgram from "../utils/utilsGl/createProgram"
-import { OBJ } from "webgl-obj-loader"
 import catModel from "../assets/cat_model/model.obj?raw"
 import {m4} from "../utils/utilsGl/matrix3d"
 import textureURL from "../assets/cat_model/texture.png?url"
@@ -236,8 +235,7 @@ export default function CatComponent() {
             const matrix = m4.multiply(projection, modelMatrix);
             gl.uniformMatrix4fv(matrixLocation, false, matrix);
             
-            r += delta * 2;
-            
+            r += delta * 0.1 * getTransport().bpm.value;
             gl.drawElements(gl.TRIANGLES, modelData.indices.length, gl.UNSIGNED_SHORT, 0);
             window.requestAnimationFrame(draw);
         };

@@ -134,7 +134,7 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
                 <button className={styles.menuButton} onClick={()=>{handlerAddButton("drumMachine")}}>  drum machine </button>
             </div>
             <div className={styles.BPMControl}>
-            BMP
+            BPM
             <input className = {styles.slider} type="range" id="BPM"  min="10" max="300" onChange={(e)=>{setBPM(e.target.value)}} value={BPM} /> {BPM}
             </div>
             <canvas className = {styles.canvas} ref = {progressCanvas} id="tactProgress" width="180" height="50"></canvas>

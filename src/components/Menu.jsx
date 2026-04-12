@@ -14,8 +14,9 @@ import styles from "../assets/menu.module.css"
 
 export default function MenuComponent({addInstrumentCallback, init = defaultParametrs}) {
     const [isMenuHiden, setIsMenuHiden] = useState(false)
-    const [BPM, setBPM] = useState(getTransport().bpm.value)
+    const [BPM, setBPM] = useState(init.bpm)
     const [reverbState, setReverbState] = useState({decay: init.reverbDecay, wet: init.reverbWet})
+    const [gainState, setGainState] = useState(init.gain)
     const instruments = useInstrumentsStore((state) => state.instruments)
     const loadInstruments = useInstrumentsStore((state) => state.loadInstruments) 
                                                                                                             
@@ -100,6 +101,10 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
     }, [reverbState])
 
     useEffect(()=>{
+        master.current.setGain(gainState)
+    }, [gainState])
+
+    useEffect(()=>{
         
         getTransport().bpm.value = BPM
 
@@ -112,6 +117,7 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
 
     const handlerSliderReverbWet = (e) => {setReverbState({wet: e.target.value, decay: reverbState.decay})}
     const handlerSliderReverbDecay = (e) => {setReverbState({wet: reverbState.wet, decay: e.target.value})}
+    const handlerSliderGain = (e) => {setGainState(e.target.value)}
 
     return (
         <div className={`${styles.menu} ${isMenuHiden ? styles.hidenMenu:null}`}>
@@ -142,10 +148,14 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
         MASTER
         <div className={styles.masterBlock}>
             <div> reverb wet </div>
-            
             <input className = {styles.slider} type="range" id="wet"  min="0" max="1" step="0.01" onChange={handlerSliderReverbWet} value={reverbState.wet} /> 
+
             <div> reverb room size </div>
             <input className = {styles.slider} type="range" id="decay"  min="0.1" max="1" step="0.1" onChange={handlerSliderReverbDecay} value={reverbState.decay} />
+
+            <div> volume </div>
+            <input className = {styles.slider} type="range" id="gain"  min="0" max="100" step="1" onChange={handlerSliderGain} value={gainState} />
+            
             </div>
 
             <Cat> </Cat>

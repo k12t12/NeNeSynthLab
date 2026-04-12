@@ -2,9 +2,11 @@ import getNoteFromInterval from "./getNoteFromInterval";
 import { gainToDb } from "tone";
 
 const masterDefaultParametrs = {
-  reverbWet: 1,
-  reverbDecay: 0.2,
-  bpm: 100
+  reverbWet: 0,
+  reverbDecay: 0.1,
+  bpm: 100,
+  gain: 5
+
 }
 
 const droneSynthDefaultParametrs = {
@@ -25,7 +27,7 @@ const droneSynthDefaultParametrs = {
     freq: getNoteFromInterval(-19).freq,
     noteName: getNoteFromInterval(-19).name,
   },
-  volume: 1,
+  volume: 0.2,
   filterFreq: 1000,
   filterQ: 10,
   vibratoFreq: 1,
@@ -35,7 +37,7 @@ const droneSynthDefaultParametrs = {
 };
 
 const noiseGeneratorDefaultParametrs = {
-  volume: 1,
+  volume: 0.2,
   xRatio: 0.03,
   yRatio: 0.3,
   filterFreq: 2000,
@@ -58,7 +60,7 @@ const seqSynthDefaultParametrs = {
     currentSequenceIndex: 0,
     interval: "4n",
   },
-  volume: 1,
+  volume: 0.2,
   filterFreq: 1000,
   filterQ: 0,
   delayTime: 0.1,
@@ -68,7 +70,7 @@ const seqSynthDefaultParametrs = {
 };
 
 const drumMachineDefaultParametrs = {
-  volume: 1,
+  volume: 0.2,
   kickSeq: {
     seqLen: 16,
     sequences: [
@@ -171,22 +173,22 @@ const drumMachineDefaultParametrs = {
   },
 
   kick: {
-    volume: 1,
+    volume: 0.2,
     tone: 0,
   },
 
   snare: {
-    volume: 1,
+    volume: 0.2,
     tone: 0
   },
 
   openHat: {
-    volume: 1,
+    volume: 0.2,
     tone: 0,
   },
 
   closeHat: { 
-    volume: 1,
+    volume: 0.2,
     tone: 0,
   }
 

@@ -13,7 +13,7 @@ export default function BarComponent({onStop, onStart, onClose, children, onVolu
     </div><div className={styles.volumeControlLayer}>
     <div style={{marginBottom: "4px"}}>gain</div>
     <span> </span>
-    <input type="range" id="volume"  value={volume} min="0" max="1" step="0.01"  onChange={onVolumeChange} style={{  width: "120px", backgroundColor:"black"}}/>
+    <input type="range" id="volume"  value={volume} min="0" max="0.2" step="0.01"  onChange={onVolumeChange} style={{  width: "120px", backgroundColor:"black"}}/>
 
     <div className={styles.indicator}> { isPlaying ? "♾︎" : ""} </div>
     </div>

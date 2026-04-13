@@ -59,8 +59,10 @@ export default class NoiseGenerator {
 
   setFilter(newFreq, newQ) {
     this.filterFreq = newFreq;
+    
     this.filter.set({ frequency: newFreq, Q: newQ });
     this.setLFO(this.lfo.get().frequency, this.LFOamp); //When we change frequency, we need to update lfo min and max too
+    console.log(this.filter.frequency.getValueAtTime(now()))
   }
 
   setLFO(newFreq, newAmp) {

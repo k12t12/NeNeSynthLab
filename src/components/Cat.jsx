@@ -235,7 +235,7 @@ export default function CatComponent() {
             const matrix = m4.multiply(projection, modelMatrix);
             gl.uniformMatrix4fv(matrixLocation, false, matrix);
             
-            r += delta * 0.1 * getTransport().bpm.value;
+            r += delta * 0.07 * getTransport().bpm.value;
             gl.drawElements(gl.TRIANGLES, modelData.indices.length, gl.UNSIGNED_SHORT, 0);
             window.requestAnimationFrame(draw);
         };

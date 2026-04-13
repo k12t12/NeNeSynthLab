@@ -1,4 +1,4 @@
-import { LFO, Compressor, Gain, JCReverb, FeedbackDelay, Signal} from "tone"
+import { LFO, Compressor, Gain, JCReverb, FeedbackDelay, Signal, Oscillator} from "tone"
 
 class MasterChain {
     constructor(){
@@ -24,6 +24,7 @@ class MasterChain {
             this.reverb.wet.value = newWet
     }
 
+    connecLFOtoSignal
     connectToMaster(module) {
         module.connect(this.gain)
     }

@@ -1,4 +1,4 @@
-import { Oscillator, FeedbackDelay, AmplitudeEnvelope, Filter,Gain } from "tone";
+import { PulseOscillator, FeedbackDelay, AmplitudeEnvelope, Filter,Gain } from "tone";
 import Sequencer from "./sequencer";
 import masterChain from "./masterChain";
 
@@ -16,7 +16,7 @@ constructor(init, onStepUpdate){
         decay: init.release,
         sustain: 0
     }).connect(this.filter);
-    this.oscillator = new Oscillator(null, "square20").connect(this.ampEnv).start()
+    this.oscillator = new PulseOscillator(null).connect(this.ampEnv).start()
   
     this.sequencer = new Sequencer(init.seq, onStepUpdate,
        (time, note)=> {this.ampEnv.triggerAttackRelease("1n", time);

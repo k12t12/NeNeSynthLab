@@ -1,4 +1,4 @@
-import { gainToDb, Filter, Oscillator, Vibrato, FeedbackDelay, Gain} from "tone"
+import { gainToDb, Filter, PulseOscillator, Vibrato, FeedbackDelay, Gain} from "tone"
 import masterChain from "./masterChain"
 
 export default class DroneSynth {
@@ -12,9 +12,9 @@ export default class DroneSynth {
         
         this.filter = new Filter(init.filterFreq, "lowpass").connect(this.vibrato)
         this.oscs = {
-        firstOsc: new Oscillator(init.firstOsc.freq, "square10").connect(this.filter),
-        secondOsc: new Oscillator(init.secondOsc.freq, "square10").connect(this.filter),
-        thirdOsc: new Oscillator(init.thirdOsc.freq, "square10").connect(this.filter)
+        firstOsc: new PulseOscillator(init.firstOsc.freq).connect(this.filter),
+        secondOsc: new PulseOscillator(init.secondOsc.freq).connect(this.filter),
+        thirdOsc: new PulseOscillator(init.thirdOsc.freq).connect(this.filter)
       }
       for (let osc in this.oscs) {
         this.oscs[osc].volume.value = -36

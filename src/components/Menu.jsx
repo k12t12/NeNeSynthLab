@@ -17,6 +17,8 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
     const [BPM, setBPM] = useState(init.bpm)
     const [reverbState, setReverbState] = useState({decay: init.reverbDecay, wet: init.reverbWet})
     const [gainState, setGainState] = useState(init.gain)
+    const [LFOpwState, setLFOpwState] = useState({freq: init.lfopwFreq, amp: init.lfopwAmp})
+
     const instruments = useInstrumentsStore((state) => state.instruments)
     const loadInstruments = useInstrumentsStore((state) => state.loadInstruments) 
                                                                                                             
@@ -105,6 +107,10 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
     }, [gainState])
 
     useEffect(()=>{
+        master.current.setLFO('pwLFO', LFOpwState.freq, LFOpwState.amp)
+    }, [LFOpwState])
+
+    useEffect(()=>{
         
         getTransport().bpm.value = BPM
 
@@ -117,6 +123,9 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
 
     const handlerSliderReverbWet = (e) => {setReverbState({wet: e.target.value, decay: reverbState.decay})}
     const handlerSliderReverbDecay = (e) => {setReverbState({wet: reverbState.wet, decay: e.target.value})}
+    const handlerSliderLFOpwFreq = (e) => {setLFOpwState({freq: e.target.value, amp: LFOpwState.amp})}
+    const handlerSliderLFOpwAmp = (e) => {setLFOpwState({freq: LFOpwState.freq, amp: e.target.value})}
+
     const handlerSliderGain = (e) => {setGainState(e.target.value)}
 
     return (
@@ -152,6 +161,12 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
 
             <div> reverb room size </div>
             <input className = {styles.slider} type="range" id="decay"  min="0.1" max="1" step="0.1" onChange={handlerSliderReverbDecay} value={reverbState.decay} />
+            
+            <div> pw random lfo amp </div>
+            <input className = {styles.slider} type="range" id="gain"  min="0" max="1" step="0.01" onChange={handlerSliderLFOpwAmp} value={LFOpwState.amp} />
+
+            <div> pw random lfo freq </div>
+            <input className = {styles.slider} type="range" id="gain"  min="0.001" max="0.1" step="0.001" onChange={handlerSliderLFOpwFreq} value={LFOpwState.freq} />
 
             <div> volume </div>
             <input className = {styles.slider} type="range" id="gain"  min="0" max="100" step="1" onChange={handlerSliderGain} value={gainState} />

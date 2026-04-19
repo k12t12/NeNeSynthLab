@@ -1,4 +1,6 @@
-import { LFO, Compressor, Gain, JCReverb, FeedbackDelay, Signal, Oscillator} from "tone"
+import { Waveform, Compressor, Gain, JCReverb, FeedbackDelay} from "tone"
+import RandomLFO from "./randomLFO"
+
 
 class MasterChain {
     constructor(){
@@ -6,7 +8,11 @@ class MasterChain {
         this.reverb = new JCReverb().connect(this.compressor)
         this.predelay = new FeedbackDelay(0.8,0.01).connect(this.reverb)
         this.gain = new Gain(10).connect(this.predelay).connect(this.compressor)
-      
+        
+        //LFOs
+        this.lfos = {
+            pwLFO: new RandomLFO(0.001)
+        }
     }
 
     setGain(newGain){
@@ -16,7 +22,7 @@ class MasterChain {
 
     setReverb(newWet, newSize){
         
-        if (newSize >= 0.1){
+        if (newSize >= 0.1) {
             this.reverb.roomSize.value = newSize
         }
 
@@ -24,7 +30,17 @@ class MasterChain {
             this.reverb.wet.value = newWet
     }
 
-    connecLFOtoSignal
+    setLFO(lfo, newSpeed, newGain) {
+        if (newGain) this.lfos[lfo].setGain(newGain)
+        if (newSpeed) this.lfos[lfo].setSpeed(newSpeed)
+
+    }
+
+    connectLFOtoSignal(lfo, signal) {
+        this.lfos[lfo].connect(signal)
+
+    }
+
     connectToMaster(module) {
         module.connect(this.gain)
     }

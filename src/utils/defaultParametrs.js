@@ -5,7 +5,9 @@ const masterDefaultParametrs = {
   reverbWet: 0,
   reverbDecay: 0.1,
   bpm: 100,
-  gain: 5
+  gain: 5,
+  lfopwFreq: 0.001,
+  lfopwAmp: 1
 
 }
 

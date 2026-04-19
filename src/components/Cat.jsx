@@ -46,9 +46,7 @@ export default function CatComponent() {
                 }
             });
             
-            console.log('Найдено вершин:', vertices.length / 3);
-            console.log('Найдено текстур:', texCoords.length / 2);
-            console.log('Найдено нормалей:', normals.length / 3);
+           
             
          
             const vertexMap = new Map();
@@ -114,9 +112,7 @@ export default function CatComponent() {
                 }
             });
             
-            console.log('Распаковано вершин:', outVertices.length / 3);
-            console.log('Распаковано текстур:', outTexCoords.length / 2);
-            console.log('Индексов:', indices.length);
+    
             
             return {
                 vertices: outVertices,
@@ -244,7 +240,7 @@ export default function CatComponent() {
     
     return (
         <>
-            <canvas style = {{width: "24vh"}} id="3dcat" ref={catCanvas} width="300px" height="200px"></canvas>
+            <canvas style = {{width: "24vh"}} id="3dcat" ref={catCanvas} width="300px" height="180px"></canvas>
         </>
     );
 }

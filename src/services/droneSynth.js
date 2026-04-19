@@ -16,6 +16,12 @@ export default class DroneSynth {
         secondOsc: new PulseOscillator(init.secondOsc.freq).connect(this.filter),
         thirdOsc: new PulseOscillator(init.thirdOsc.freq).connect(this.filter)
       }
+      console.log(this.oscs['firstOsc'].width.value)
+
+      masterChain.connectLFOtoSignal('pwLFO', this.oscs['firstOsc'].width)
+      masterChain.connectLFOtoSignal('pwLFO', this.oscs['secondOsc'].width)
+      masterChain.connectLFOtoSignal('pwLFO', this.oscs['thirdOsc'].width)
+
       for (let osc in this.oscs) {
         this.oscs[osc].volume.value = -36
      

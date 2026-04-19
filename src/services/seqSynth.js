@@ -17,7 +17,7 @@ constructor(init, onStepUpdate){
         sustain: 0
     }).connect(this.filter);
     this.oscillator = new PulseOscillator(null).connect(this.ampEnv).start()
-  
+    
     this.sequencer = new Sequencer(init.seq, onStepUpdate,
        (time, note)=> {this.ampEnv.triggerAttackRelease("1n", time);
          this.oscillator.set({frequency: note})
@@ -25,7 +25,7 @@ constructor(init, onStepUpdate){
         })
     
   
-    
+    masterChain.connectLFOtoSignal('pwLFO', this.oscillator.width)
 }
 
 setGainVolume(newVolume) {

@@ -98,7 +98,7 @@ const handlerKnobFilterQ = (e) => {updateInstrument({filterQ: e})}
     <button onClick={()=>{
       handlerCurrentSequence(null, ind)
     }}> {currentStep==(ind) ? "O": "_"} </button>
-    <Knob  initValue = {getIntervalFromNote(x)} step="1" max="-21" min="26" onChange={(e)=>handlerCurrentSequence(e, ind)}> </Knob> {x}
+    <Knob  initValue = {getIntervalFromNote(x)} step="1" max="-33" min="2" onChange={(e)=>handlerCurrentSequence(e, ind)}> </Knob> {x}
       </div>
     )
     )

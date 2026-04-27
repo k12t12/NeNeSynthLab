@@ -240,7 +240,7 @@ export default function CatComponent() {
     
     return (
         <>
-            <canvas style = {{width: "24vh"}} id="3dcat" ref={catCanvas} width="300px" height="180px"></canvas>
+            <canvas style = {{width: "24vh"}} id="3dcat" ref={catCanvas} width="300px" height="150px"></canvas>
         </>
     );
 }

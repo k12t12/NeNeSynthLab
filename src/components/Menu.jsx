@@ -18,6 +18,7 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
     const [reverbState, setReverbState] = useState({decay: init.reverbDecay, wet: init.reverbWet})
     const [gainState, setGainState] = useState(init.gain)
     const [LFOpwState, setLFOpwState] = useState({freq: init.lfopwFreq, amp: init.lfopwAmp})
+    const [LFOdetuneState, setLFOdetuneState] = useState({freq: init.lfodetuneFreq, amp: init.lfodetuneAmp})
 
     const instruments = useInstrumentsStore((state) => state.instruments)
     const loadInstruments = useInstrumentsStore((state) => state.loadInstruments) 
@@ -107,8 +108,12 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
     }, [gainState])
 
     useEffect(()=>{
-        master.current.setLFO('pwLFO', LFOpwState.freq, LFOpwState.amp)
+        master.current?.setLFO('pwLFO', LFOpwState.freq, LFOpwState.amp)
     }, [LFOpwState])
+
+    useEffect(()=>{
+        master.current?.setLFO('detuneLFO', LFOdetuneState.freq, LFOdetuneState.amp)
+    }, [LFOdetuneState])
 
     useEffect(()=>{
         
@@ -125,6 +130,9 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
     const handlerSliderReverbDecay = (e) => {setReverbState({wet: reverbState.wet, decay: e.target.value})}
     const handlerSliderLFOpwFreq = (e) => {setLFOpwState({freq: e.target.value, amp: LFOpwState.amp})}
     const handlerSliderLFOpwAmp = (e) => {setLFOpwState({freq: LFOpwState.freq, amp: e.target.value})}
+    
+    const handlerSliderLFOdetuneFreq = (e) => {setLFOdetuneState({freq: e.target.value, amp: LFOdetuneState.amp})}
+    const handlerSliderLFOdetuneAmp = (e) => {setLFOdetuneState({freq: LFOdetuneState.freq, amp: e.target.value})}
 
     const handlerSliderGain = (e) => {setGainState(e.target.value)}
 
@@ -167,6 +175,12 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
 
             <div> pw random lfo freq </div>
             <input className = {styles.slider} type="range" id="gain"  min="0.001" max="0.1" step="0.001" onChange={handlerSliderLFOpwFreq} value={LFOpwState.freq} />
+
+            <div> detune random lfo amp </div>
+            <input className = {styles.slider} type="range" id="gain"  min="0" max="1" step="0.01" onChange={handlerSliderLFOdetuneAmp} value={LFOdetuneState.amp} />
+
+            <div> detune random lfo freq </div>
+            <input className = {styles.slider} type="range" id="gain"  min="0.0001" max="0.001" step="0.0001" onChange={handlerSliderLFOdetuneFreq} value={LFOdetuneState.freq} />
 
             <div> volume </div>
             <input className = {styles.slider} type="range" id="gain"  min="0" max="100" step="1" onChange={handlerSliderGain} value={gainState} />

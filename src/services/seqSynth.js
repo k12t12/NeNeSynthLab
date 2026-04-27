@@ -26,6 +26,7 @@ constructor(init, onStepUpdate){
     
   
     masterChain.connectLFOtoSignal('pwLFO', this.oscillator.width)
+    masterChain.connectLFOtoSignal('detuneLFO', this.oscillator.detune)
 }
 
 setGainVolume(newVolume) {

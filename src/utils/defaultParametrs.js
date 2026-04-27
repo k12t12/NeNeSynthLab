@@ -7,7 +7,9 @@ const masterDefaultParametrs = {
   bpm: 100,
   gain: 5,
   lfopwFreq: 0.001,
-  lfopwAmp: 1
+  lfopwAmp: 0.1,
+  lfodetuneFreq: 0.001,
+  lfodetuneAmp: 0.5
 
 }
 

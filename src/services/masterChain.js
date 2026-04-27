@@ -1,6 +1,6 @@
 import { Gain, Reverb, FeedbackDelay, Filter} from "tone"
 import RandomLFO from "./randomLFO"
-
+import { masterDefaultParametrs } from "../utils/defaultParametrs"
 
 class MasterChain {
     constructor(){
@@ -10,7 +10,8 @@ class MasterChain {
         
         //LFOs
         this.lfos = {
-            pwLFO: new RandomLFO(0.001)
+            pwLFO: new RandomLFO(null, null, -0.5, 0.5),
+            detuneLFO: new RandomLFO(null, null, -300, 300)
         }
     }
 

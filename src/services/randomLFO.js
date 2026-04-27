@@ -1,17 +1,17 @@
-import { Player, Gain} from "tone";
+import { Player, Gain, Scale} from "tone";
 import noiseSample from '../assets/sounds/noise.ogg'
-
+import { masterDefaultParametrs } from "../utils/defaultParametrs"
 export default class RandomLFO {
-    constructor(speed, gain) {
+    constructor(speed, gain, min, max) {
         this.gain = new Gain(gain)
-
+        this.scale = new Scale(min, max).connect(this.gain)
         this.noise = new Player({
             url: noiseSample,
             autostart:true,
             loop: true,
             playbackRate: speed
 
-        }).connect(this.gain)
+        }).connect(this.scale)
         
         
 

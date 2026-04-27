@@ -32,10 +32,8 @@ export default class DroneSynth {
     }
 
     setGainVolume(newVolume){
-      newVolume = newVolume
-      if (typeof(newVolume)=="number") {
             this.gain.gain.rampTo(newVolume, 0.005)
-      }
+      
     }
 
     setDelay(parametrs){

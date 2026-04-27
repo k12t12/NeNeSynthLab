@@ -1,13 +1,13 @@
-import { Waveform, Compressor, Gain, JCReverb, FeedbackDelay} from "tone"
+import { Waveform, Compressor, Gain, JCReverb, FeedbackDelay, Filter} from "tone"
 import RandomLFO from "./randomLFO"
 
 
 class MasterChain {
     constructor(){
-        this.compressor = new Compressor(0).toDestination()
-        this.reverb = new JCReverb().connect(this.compressor)
+        this.DCblock = new Filter(20, 'highpass').toDestination()
+        this.reverb = new JCReverb().connect(this.DCblock)
         this.predelay = new FeedbackDelay(0.8,0.01).connect(this.reverb)
-        this.gain = new Gain(10).connect(this.predelay).connect(this.compressor)
+        this.gain = new Gain(10).connect(this.predelay).connect(this.DCblock)
         
         //LFOs
         this.lfos = {

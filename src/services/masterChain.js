@@ -21,8 +21,9 @@ class MasterChain {
     }
 
     setReverb(newWet, newSize){
-        
-        if (newSize >= 0.1) {
+        console.log(newWet, newSize)
+
+        if (newSize != this.reverb.decay) {
             this.reverb.decay = newSize
         }
 

@@ -174,7 +174,7 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
             <input className = {styles.slider} type="range" id="wet"  min="0" max="1" step="0.01" onChange={handlerSliderReverbWet} value={reverbState.wet} /> 
 
             <div> reverb room size </div>
-            <input className = {styles.slider} type="range" id="decay"  min="0.1" max="1" step="0.1" onChange={handlerSliderReverbDecay} value={reverbState.decay} />
+            <input className = {styles.slider} type="range" id="decay"  min="0.1" max="10" step="0.1" onChange={handlerSliderReverbDecay} value={reverbState.decay} />
             
             <div> pw random lfo amp </div>
             <input className = {styles.slider} type="range" id="gain"  min="0" max="1" step="0.01" onChange={handlerSliderLFOpwAmp} value={LFOpwState.amp} />

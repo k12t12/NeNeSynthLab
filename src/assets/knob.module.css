@@ -2,7 +2,6 @@
     width: 60px;
     height: 60px;
     border-radius: 120%;
-    background: none;
     outline: none;
     box-shadow: none;
     color: inherit;
@@ -11,7 +10,7 @@
 }
 
 .knob:active{
-    color: black;
+    color: var(--line-color);
 }
 
 .knob:hover{

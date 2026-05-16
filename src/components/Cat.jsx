@@ -4,12 +4,19 @@ import createProgram from "../utils/utilsGl/createProgram"
 import catModel from "../assets/cat_model/model.obj?raw"
 import {m4} from "../utils/utilsGl/matrix3d"
 import textureURL from "../assets/cat_model/texture.png?url"
+import parseHexToRGB from "../utils/parseHexToRGB"
+
 import { getTransport } from "tone"
+
 
 export default function CatComponent() {
     const catCanvas = useRef(null)
     
     useEffect(() => {
+        const rootStyle = getComputedStyle(document.documentElement)
+        const RGBspaceColor = parseHexToRGB(rootStyle.getPropertyValue('--space-color'))
+        const RGBlineColor = parseHexToRGB(rootStyle.getPropertyValue('--line-color'))
+
         function parseOBJ(objText) {
             const vertices = [];
             const texCoords = [];
@@ -141,20 +148,22 @@ export default function CatComponent() {
             precision mediump float; 
             varying vec2 v_texture_coords;
             uniform sampler2D u_texture;
+            uniform vec4 scolor;
+            uniform vec4 lcolor;
+
             void main() {
                 vec4 color = texture2D(u_texture, v_texture_coords);
                 if (color.r < 0.5) {
-                    gl_FragColor = vec4(1,1,1,1);
+                    gl_FragColor = vec4(scolor.x, scolor.y, scolor.z, 1);
                 } else {
-                    gl_FragColor = vec4(0,0,0,1);
+                    gl_FragColor = vec4(lcolor.x, lcolor.y, lcolor.z, 1);
                     }
                 
             }
         `;
 
-      
+        
         const gl = catCanvas.current.getContext("webgl");
-        gl.clearColor(1, 1, 1, 1);
         gl.enable(gl.DEPTH_TEST);
         gl.enable(gl.CULL_FACE);
         
@@ -164,7 +173,12 @@ export default function CatComponent() {
         const program = createProgram(gl, vertexShader, fragmentShader);
         gl.useProgram(program);
         
-      
+        const uniSpaceColorLocation = gl.getUniformLocation(program, 'scolor')
+        gl.uniform4fv(uniSpaceColorLocation, new Float32Array(RGBspaceColor))
+
+        const uniLineColorLocation = gl.getUniformLocation(program, 'lcolor')
+        gl.uniform4fv(uniLineColorLocation, new Float32Array(RGBlineColor))
+
         const vertexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(modelData.vertices), gl.STATIC_DRAW);
@@ -219,7 +233,7 @@ export default function CatComponent() {
             const delta = (time - prevTime) / 1000;
             prevTime = time;
             
-            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+            gl.clearColor(RGBspaceColor[0], RGBspaceColor[1], RGBspaceColor[2], 1);
             
             const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
             const projection = m4.orthographic(-0.4 * aspect, 0.7 * aspect, -0.1, 2, 4, -4);

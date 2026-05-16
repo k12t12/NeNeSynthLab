@@ -3,8 +3,8 @@
     border-style: solid;
     width: 520px;
     height: 290px;
-    background-color: white;
-    
+    background-color: var(--space-color);
+    color: var(--line-color)
  
 }
 .knobs {

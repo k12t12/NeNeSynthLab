@@ -4,8 +4,8 @@
     border-style: solid;
     width: 200px;
     height: 520px;
-    background-color: white;
-    
+    background-color: var(--space-color);
+    color: var(--line-color)
  
 }
 .ratioControls {

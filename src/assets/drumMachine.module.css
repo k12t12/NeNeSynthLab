@@ -4,8 +4,8 @@
     border-style: solid;
     width: 615px;
     height: 290px;
-    background-color: white;
-    
+    background-color: var(--space-color);
+    color: var(--line-color)
  
 }
 
@@ -35,6 +35,7 @@
 .pattern {
     display: flex;
 }
+
 
 .patternEditor {
     display: flex;

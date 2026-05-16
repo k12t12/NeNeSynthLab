@@ -79,11 +79,16 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
 
     useEffect(()=>{
         master.current = masterChain
+        const rootStyle = getComputedStyle(document.documentElement)
+        const lineColor = rootStyle.getPropertyValue('--line-color')
+        const ctx = progressCanvas.current.getContext("2d")
 
+        ctx.fillStyle = lineColor
+        
         const draw = () => {
         const len = getTransport().toTicks("1m")
         let pos = getTransport().ticks%len
-        const ctx = progressCanvas.current.getContext("2d")
+
         ctx.clearRect(0,0,180, 50)
         ctx.fillRect(0, -12, 1, 50)
         ctx.fillRect(pos/5, -12, 5, 50)
@@ -156,6 +161,7 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
                 <button className={styles.menuButton} onClick={()=>{handlerAddButton("noiseGenerator")}}>  noise generator </button>
                 <button className={styles.menuButton} onClick={()=>{handlerAddButton("drumMachine")}}>  drum machine </button>
             </div>
+            
             <div className={styles.BPMControl}>
             BPM
             <input className = {styles.slider} type="range" id="BPM"  min="10" max="300" onChange={(e)=>{setBPM(e.target.value)}} value={BPM} /> {BPM}

@@ -1,5 +1,15 @@
+import { useEffect, useState } from "react"
 import styles from "../../assets/bar.module.css"
+
 export default function BarComponent({onStop, onStart, onClose, children, onVolumeChange, volume, isPlaying}) {
+    const [rangeColor, setRangeColor] = useState(null)
+
+    useEffect(() => {
+        const rootStyle = getComputedStyle(document.documentElement)
+        const lineColor = rootStyle.getPropertyValue('--line-color')
+        setRangeColor(lineColor)
+    })
+    
     return (
     <div className={styles.bar}>
     
@@ -13,7 +23,7 @@ export default function BarComponent({onStop, onStart, onClose, children, onVolu
     </div><div className={styles.volumeControlLayer}>
     <div style={{marginBottom: "4px"}}>gain</div>
     <span> </span>
-    <input type="range" id="volume"  value={volume} min="0" max="0.2" step="0.01"  onChange={onVolumeChange} style={{  width: "120px", backgroundColor:"black"}}/>
+    <input className={styles.barRange} type="range" id="volume"  value={volume} min="0" max="0.2" step="0.01"  onChange={onVolumeChange} style={{  width: "120px", backgroundColor: rangeColor}}/>
 
     <div className={styles.indicator}> { isPlaying ? "♾︎" : ""} </div>
     </div>

@@ -1,16 +1,15 @@
 .bar{
     height: 50px;
     display: grid;
- 
+        
 }
 
 .nameLayer{
     
     height: 20px;
-    
     display: grid;
     grid-template-columns: 30px 30px 85fr 28px;
-    background-color: black;
+    background-color: var(--line-color);
     
 }
 
@@ -18,21 +17,19 @@
     margin-top: -0px;
     padding-left: 2%;
     height: 32px;
-    color: white;
+    color: var(--space-color);
     display: flex;
-    background-color: black;
+    background-color: var(--line-color);
     
-    
+
 }
 .handle {
     touch-action:none;
-    background-color: black;
-    color:white;
+    background-color: var(--line-color);
+    color: var(--space-color);
     text-align: center;
 }
 
 .indicator {
     font-size: 22px;
-
-
 }

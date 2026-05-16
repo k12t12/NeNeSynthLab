@@ -1,5 +1,4 @@
 import { Player, FeedbackDelay, Filter, LFO, Gain, getContext, now } from "tone";
-import findZeroCrossing from "../utils/findZeroCrossing";
 import masterChain from "./masterChain";
 import Worker from "../utils/generatePerlinNoiseBuffer?worker"
 
@@ -104,7 +103,7 @@ export default class NoiseGenerator {
     this.player = new Player({
       url: this.buffer,
       loop: true,
-      loopStart: findZeroCrossing(this.buffer),
+      loopStart: 0,
       loopEnd: this.buffer.duration,
       autostart: true,
       fadeIn: 10,

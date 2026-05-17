@@ -10,14 +10,20 @@ import Cat from "./Cat"
 import useInstrumentsStore from "../store/instrumentsStore"
 import generateId from "../utils/generateId"
 
+import back1 from "../assets/backgrounds/back1.png?url"
+import back2 from "../assets/backgrounds/back2.png?url"
+import back3 from "../assets/backgrounds/back3.png?url"
+import back4 from "../assets/backgrounds/back4.png?url"
+import back5 from "../assets/backgrounds/back5.png?url"
+
 import styles from "../assets/menu.module.css"
 
 const backgrounds = [
-    'url("/src/assets/backgrounds/back1.png")',
-    'url("/src/assets/backgrounds/back2.png")',
-    'url("/src/assets/backgrounds/back3.png")',
-    'url("/src/assets/backgrounds/back4.png")',
-    'url("/src/assets/backgrounds/back5.png")'
+    'url("' + back1 + '")',
+    'url("' + back2 + '")',
+    'url("' + back3 + '")',
+    'url("' + back4 + '")',
+    'url("' + back5 + '")'
 
 ]
 

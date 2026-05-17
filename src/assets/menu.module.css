@@ -15,6 +15,8 @@
     transition: margin-right 0.4s;
 }
 
+
+
 .addBlock {
     border-style: dotted;
     border-width: 0.3vh;
@@ -24,7 +26,7 @@
     grid-template-columns: 14vh 14vh;
     grid-template-rows: 4vh 4vh;
     gap: 1vh;
-    margin-bottom: 0vh;
+    margin: 0vh;
 }
 
 .openCloseButton{
@@ -66,8 +68,8 @@
 input[type="range"].slider {
   appearance: none;
   width: 20vh; 
-  height: 4vh;
-  margin: -0.3vh;
+  height: 3vh;
+  margin: 0vh;
 
 }
 
@@ -113,17 +115,20 @@ input[type="range"].slider::-webkit-slider-thumb {
 }
 
 .loadButton {
-  padding: 0;
-  opacity: 0;
-  height: 1vh;
-  width: 1vh;
-  font-size: 1vh;
+  padding: 0vh;
+  opacity: 100%;
+  height: 0vh;
+  width: 0vh;
+  font-size: 0vh;
+  margin: 0vh;
+  border-width: 0vh;
 } 
 
 .menuButton {
     border-width: 0.1vh;
     padding: 0vh;
     font-size: 1.5vh;
+    margin: 0vh
 }
 
 .menuButton:hover{
@@ -132,8 +137,8 @@ input[type="range"].slider::-webkit-slider-thumb {
 }
 
 .loadBlock {
-  margin-bottom: 0vh;
-  border-width: 0.3vh;
+  margin: 0vh;
+  
     height: 2vh;
     padding: 0.2vh;
 

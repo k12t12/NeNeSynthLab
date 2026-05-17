@@ -12,6 +12,15 @@ import generateId from "../utils/generateId"
 
 import styles from "../assets/menu.module.css"
 
+const backgrounds = [
+    'url("/src/assets/backgrounds/back1.png")',
+    'url("/src/assets/backgrounds/back2.png")',
+    'url("/src/assets/backgrounds/back3.png")',
+    'url("/src/assets/backgrounds/back4.png")',
+    'url("/src/assets/backgrounds/back5.png")'
+
+]
+
 export default function MenuComponent({addInstrumentCallback, init = defaultParametrs}) {
     const [isMenuHiden, setIsMenuHiden] = useState(false)
     const [BPM, setBPM] = useState(init.bpm)
@@ -19,6 +28,7 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
     const [gainState, setGainState] = useState(init.gain)
     const [LFOpwState, setLFOpwState] = useState({freq: init.lfopwFreq, amp: init.lfopwAmp})
     const [LFOdetuneState, setLFOdetuneState] = useState({freq: init.lfodetuneFreq, amp: init.lfodetuneAmp})
+    const [backgroundNumState, setBackgroundNumState] = useState(0)
 
     const instruments = useInstrumentsStore((state) => state.instruments)
     const loadInstruments = useInstrumentsStore((state) => state.loadInstruments) 
@@ -78,11 +88,17 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
     }
 
     useEffect(()=>{
+        document.documentElement.style.setProperty('--background-url', backgrounds[backgroundNumState])
+
+    }, [backgroundNumState])
+
+    useEffect(()=>{
         master.current = masterChain
         const rootStyle = getComputedStyle(document.documentElement)
         const lineColor = rootStyle.getPropertyValue('--line-color')
         const ctx = progressCanvas.current.getContext("2d")
 
+        
         ctx.fillStyle = lineColor
         
         const draw = () => {
@@ -131,6 +147,8 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
         setIsMenuHiden(!isMenuHiden)
     }
 
+    const handlerAddButtonBackNum = () => {setBackgroundNumState((backgroundNumState + 1) % backgrounds.length )}
+
     const handlerSliderReverbWet = (e) => {setReverbState({wet: e.target.value, decay: reverbState.decay})}
     const handlerSliderReverbDecay = (e) => {setReverbState({wet: reverbState.wet, decay: e.target.value})}
     const handlerSliderLFOpwFreq = (e) => {setLFOpwState({freq: e.target.value, amp: LFOpwState.amp})}
@@ -149,7 +167,7 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
             <button  onClick={handlerShowHideMenu} className={styles.openCloseButton}> {isMenuHiden ? "open": "hide"} </button>
 
             <div className={styles.loadBlock}> 
-            <label htmlFor="project_load"> load </label>
+            <label htmlFor="project_load" style={{margin: '0vh'}}> load </label>
             <input className={styles.loadButton} id="project_load" type="file" onChange={handlerLoadButton} /> 
             </div>
             <button className={styles.menuButton} onClick={handlerSaveButton}> save </button>
@@ -192,8 +210,12 @@ export default function MenuComponent({addInstrumentCallback, init = defaultPara
             <input className = {styles.slider} type="range" id="gain"  min="0" max="100" step="1" onChange={handlerSliderGain} value={gainState} />
             
             </div>
+            
+        <div> background {backgroundNumState + 1} <button className = {styles.menuButton} onClick={handlerAddButtonBackNum}> {'>'} </button> </div>
 
             <Cat> </Cat>
+
+           
             
         </div>
     )
